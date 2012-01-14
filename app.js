@@ -15,6 +15,7 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('phantom', 'phantomjs');
+  //let's change this to a local dir? then rsync to media server or use nginx?
   app.set('screenshots', '/tmp');
   app.set('default viewport width', 1024);
   app.set('default viewport height', 600);

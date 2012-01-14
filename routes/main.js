@@ -98,6 +98,7 @@ app.get('/:url(*)', ratelimit(60, 10), function(req, res, next){
   rasterize(url, options, function(err){
     if (err) return next(err);
     console.log('screenshot - rasterized %s', url);
+    //magic!
     app.emit('screenshot', url, options.path, id);
     res.sendfile(options.path);
   });
