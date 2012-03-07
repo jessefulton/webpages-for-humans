@@ -8,7 +8,8 @@ var express = require('express')
   , redis = require('redis')
   , http = require('http');
 
-app = express();
+
+app = express.createServer();
 
 app.configure(function(){
   app.db = redis.createClient();
@@ -16,7 +17,7 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.set('phantom', 'phantomjs');
   //let's change this to a local dir? then rsync to media server or use nginx?
-  app.set('screenshots', '/tmp');
+  app.set('screenshots', __dirname + '/public/renders');
   app.set('default viewport width', 1024);
   app.set('default viewport height', 600);
   app.set('colors', 3);
@@ -29,11 +30,23 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler()); 
+	app.set('view options', { pretty: true });
+	app.use(express.logger('dev'));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 require('./routes');
 
-http.createServer(app).listen(3000);
 
-console.log("Express server listening on port 3000");
+
+
+/**
+ * Start it.
+ */
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+    var addr = app.address();
+    app.set("basedomain", 'http://' + addr.address + ':' + addr.port);
+	console.log('    app listening on ' + app.set("basedomain"));
+    console.log('    NODE_ENV = ' + process.env.NODE_ENV);
+});

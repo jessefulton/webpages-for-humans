@@ -1,13 +1,12 @@
 {
     "name": "screenshots"
   , "version": "0.0.1"
-  , "private": true
   , "dependencies": {
-      "express": "https://github.com/visionmedia/express/tarball/master"
+      "express": "2.5.x"
     , "jade": "*"
     , "palette": "*"
     , "redis": "0.7.x"
-    , "canvas": "0.8.x"
+    , "canvas": "0.10.x"
     , "stylus": "0.21.x"
   }
 }
