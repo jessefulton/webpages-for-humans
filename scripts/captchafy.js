@@ -285,31 +285,27 @@
 					if (parts[i].length == 1) parts[i] = '0' + parts[i];
 				} 
 				var color = "#" + parts.join('').toUpperCase(); // "#0070FF"
-				var text = this.nodeValue;
-
 				//TODO: implement
 				var fontface = "Times";
-
-				console.log(text + " [" + fontSize + "px]");
-
-
-				console.log('creating canvas');
+				var text = this.nodeValue;
+				var words = text.split(' ');
+				var replacements = [];
 				var canvas = document.createElement('canvas');
 
-				var captcha = new Captcha(canvas);
-				captcha.init(text, fontSize, fontface); //, 300);
-
-				console.log('captcha inited');				
-				captcha
-					.text(TextProducer.basic, {"text": text, "size": fontSize, "fillStyle": color, "font": fontface })
-					.noise(NoiseProducer.blob, {"fillStyle": color, "h": fontSize, "w": (fontSize * 1.5)})
-					.render();
-				console.log('captcha rendered');
-				captcha.crop();
-				console.log("dataURL");
-				//console.log(captcha.toDataURL());
+				for (var i=0; i<words.length; i++) {
+					var word = words[i];
+					var captcha = new Captcha(canvas);
+					captcha.init(word, fontSize, fontface);
+					captcha
+						.text(TextProducer.basic, {"text": word, "size": fontSize, "fillStyle": color, "font": fontface })
+						.noise(NoiseProducer.blob, {"fillStyle": color, "h": fontSize, "w": (fontSize * 1.5)})
+						.render();
+					captcha.crop();
+					replacements.push('<img src="' + captcha.toDataURL() + '" /> ');
+				}
 				
-				$(this).replaceWith('<img src="' + captcha.toDataURL() + '" />');
+				
+				$(this).replaceWith(replacements.join(' '));
 
 				
 				//$(this).replaceWith(this.nodeValue.replace(/([a-z0-9]+)/gi, '<img src="http://0.0.0.0:5000/generate/$1/' + fontSize + '/' + color + '" />'));
