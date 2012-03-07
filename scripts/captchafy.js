@@ -36,7 +36,7 @@
 				} 
 				var color = parts.join('').toUpperCase(); // "#0070FF"
 				
-				$(this).replaceWith(this.nodeValue.replace(/([a-z0-9]+)/gi, '<img src="http://0.0.0.0:5100/generate/$1/' + fontSize + '/' + color + '" />'));
+				$(this).replaceWith(this.nodeValue.replace(/([a-z0-9]+)/gi, '<img src="http://0.0.0.0:5000/generate/$1/' + fontSize + '/' + color + '" />'));
 			});
 		}
 		catch(e) {
