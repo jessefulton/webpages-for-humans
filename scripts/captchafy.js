@@ -58,8 +58,8 @@
 			this.canvas.width = (textWidth + (this.padding ? this.padding : 0)) * 2;
 			this.canvas.height = (this.fontSize + (this.padding ? this.padding : 0)) * 4;
 			//context.restore();
-			console.log('adjusted Size');
-			console.log(this.canvas.width + "x" + this.canvas.height);
+			//console.log('adjusted Size');
+			//console.log(this.canvas.width + "x" + this.canvas.height);
 		}
 		
 		this.toDataURL = function() {
@@ -74,21 +74,14 @@
 		}
 		
 		this.crop = function() {
-			console.log('beginning crop');
 			var context = this.canvas.getContext('2d');
-			console.log('got context');
-			console.log(this.canvas.width + "x" + this.canvas.height);
 			var imageData = context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-			console.log('got imageData');
 			var data = imageData.data;
-			
-			console.log('got imageData.data');
-			
+
 			var maxX = 0
 				, maxY = 0
 				, minX = this.canvas.width
 				, minY = this.canvas.height;
-				
 	
 			for (var i=0; i<data.length; i+=4) {
 				var alpha = data[i + 3];
@@ -103,16 +96,14 @@
 					if (y > maxY) { maxY = y; }
 				}
 			}
-			console.log('cropping to: ');
-			console.log(minX, maxX, minY, maxY);
 	
 			var croppedData = context.getImageData(minX, minY, (maxX-minX), (maxY-minY));
 			this.canvas.width = maxX-minX;
 			this.canvas.height = maxY-minY;
 			
 			context.putImageData(croppedData, 0, 0);
-	
 		}
+
 	};
 
 	var Gimpy = {
@@ -271,44 +262,64 @@
 			});
 		};
 		
+		var toColorString = function(rgbString) {
+			var parts = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+			// parts now should be ["rgb(0, 70, 255", "0", "70", "255"]
+			
+			delete (parts[0]);
+			for (var i = 1; i <= 3; ++i) {
+				parts[i] = parseInt(parts[i]).toString(16);
+				if (parts[i].length == 1) parts[i] = '0' + parts[i];
+			} 
+			return "#" + parts.join('').toUpperCase(); // "#0070FF"
+		}
+		
 		try {	
 			getTextNodesIn($(document.body)).each(function() {
 				var fontSize = parseInt($(this.parentNode).css("font-size"));
-				var rgbString = $(this.parentNode).css("color");
-				
-				var parts = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-				// parts now should be ["rgb(0, 70, 255", "0", "70", "255"]
-				
-				delete (parts[0]);
-				for (var i = 1; i <= 3; ++i) {
-					parts[i] = parseInt(parts[i]).toString(16);
-					if (parts[i].length == 1) parts[i] = '0' + parts[i];
-				} 
-				var color = "#" + parts.join('').toUpperCase(); // "#0070FF"
-				//TODO: implement
-				var fontface = "Times";
 				var text = this.nodeValue;
-				var words = text.split(' ');
-				var replacements = [];
-				var canvas = document.createElement('canvas');
 
-				for (var i=0; i<words.length; i++) {
-					var word = words[i];
-					var captcha = new Captcha(canvas);
-					captcha.init(word, fontSize, fontface);
-					captcha
-						.text(TextProducer.basic, {"text": word, "size": fontSize, "fillStyle": color, "font": fontface })
-						.noise(NoiseProducer.blob, {"fillStyle": color, "h": fontSize, "w": (fontSize * 1.5)})
-						.render();
-					captcha.crop();
-					replacements.push('<img src="' + captcha.toDataURL() + '" /> ');
+				/*
+				console.log(text);
+				console.log("!!text = " + !!text);
+				console.log("!!fontSize = " + !!fontSize);
+				console.log("visible = " + ($(this.parentNode).is(':visible')));
+				console.log("============");
+				*/
+				
+				if (!!text && !!fontSize && ($(this.parentNode).is(':visible'))) {
+
+					var color = toColorString($(this.parentNode).css("color"));
+					//TODO: implement
+					var fontface = "Times";
+					var words = text.split(' ');
+					var replacements = [];
+					var canvas = document.createElement('canvas');				
+					
+					for (var i=0; i<words.length; i++) {
+						var word = words[i];
+						if (!word) { continue; }
+						
+						try {
+							var captcha = new Captcha(canvas);
+							captcha.init(word, fontSize, fontface);
+							captcha
+								.text(TextProducer.basic, {"text": word, "size": fontSize, "fillStyle": color, "font": fontface })
+								.noise(NoiseProducer.blob, {"fillStyle": color, "h": fontSize, "w": (fontSize * 1.5)})
+								.render();
+							captcha.crop();
+							replacements.push('<img src="' + captcha.toDataURL() + '" /> ');
+						}
+						catch(err) {
+							console.log("Error generating captcha for " + word + " [" + fontSize + "]");
+							console.log(err);
+						}
+					}
+					
+					
+					$(this).replaceWith(replacements.join(' '));
+
 				}
-				
-				
-				$(this).replaceWith(replacements.join(' '));
-
-				
-				//$(this).replaceWith(this.nodeValue.replace(/([a-z0-9]+)/gi, '<img src="http://0.0.0.0:5000/generate/$1/' + fontSize + '/' + color + '" />'));
 				
 				
 			});
