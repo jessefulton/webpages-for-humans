@@ -35,8 +35,8 @@ page.open(url, function (status) {
 				return document.body.className;
 			});
 			var mgn = page.evaluate(function() { return document.body.innerHTML; });
-			console.log(mgn);
-			console.log(cn);
+			//console.log(mgn);
+			//console.log(cn);
 			return cn.indexOf("captchafied") != -1;
 		}, function() {
 			console.log("rendered.");

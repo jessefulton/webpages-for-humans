@@ -311,7 +311,7 @@
 							replacements.push('<img src="' + captcha.toDataURL() + '" /> ');
 						}
 						catch(err) {
-							console.log("Error generating captcha for " + word + " [" + fontSize + "]");
+							//console.log("Error generating captcha for " + word + " [" + fontSize + "]");
 							console.log(err);
 						}
 					}
