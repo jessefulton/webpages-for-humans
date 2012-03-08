@@ -38,7 +38,7 @@ app.configure('development', function(){
 
 app.configure('production', function(){
 	//let's change this to a local dir? then rsync to media server or use nginx?
-	app.set('screenshots', './tmp');
+	app.set('screenshots', '/tmp');
 	app.set('view options', { pretty: true });
 	app.use(express.logger('dev'));
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
