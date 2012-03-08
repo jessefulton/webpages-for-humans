@@ -1,3 +1,4 @@
+console.log("executing phantomjs rasterize.js");
 var page = require('webpage').create()
   , url = phantom.args[0]
   , path = phantom.args[1]
@@ -13,8 +14,12 @@ page.viewportSize = {
   , height: ~~size[1] || 600
 };
 
+console.log("phantomjs: setup viewport");
+
+
 page.open(url, function (status) {
   if (status == 'success') {
+	  console.log("phantomjs: successfully opened URL");
     //page.render(path);
     //phantom.exit();
     
@@ -42,6 +47,7 @@ page.open(url, function (status) {
 
     
   } else {
+	  console.log("phantomjs: could not open URL: " + status);
     throw new Error('failed to load ' + url);
   }
 });
