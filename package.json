@@ -4,7 +4,6 @@
   , "dependencies": {
       "express": "2.5.x"
     , "jade": "*"
-    , "palette": "*"
     , "redis": "0.7.x"
     , "redis-url": "0.0.1"
     , "stylus": "0.21.x"
