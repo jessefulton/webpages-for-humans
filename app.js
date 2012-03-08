@@ -5,14 +5,15 @@
 
 var express = require('express')
   , stylus = require('stylus')
-  , redis = require('redis')
+  //, redis = require('redis')
+  , redis = require('redis-url').createClient(process.env.REDISTOGO_URL)
   , http = require('http');
 
 
 app = express.createServer();
 
 app.configure(function(){
-  app.db = redis.createClient();
+  app.db = redis; //.createClient();
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('phantom', 'phantomjs');

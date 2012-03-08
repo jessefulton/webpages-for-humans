@@ -6,6 +6,7 @@
     , "jade": "*"
     , "palette": "*"
     , "redis": "0.7.x"
+    , "redis-url": "0.0.1"
     , "canvas": "0.10.x"
     , "stylus": "0.21.x"
   }
