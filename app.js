@@ -17,8 +17,6 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('phantom', 'phantomjs');
-  //let's change this to a local dir? then rsync to media server or use nginx?
-  app.set('screenshots', __dirname + '/public/renders');
   app.set('default viewport width', 1024);
   app.set('default viewport height', 600);
   app.set('colors', 3);
@@ -31,6 +29,16 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
+	//let's change this to a local dir? then rsync to media server or use nginx?
+	app.set('screenshots', __dirname + '/public/renders');
+	app.set('view options', { pretty: true });
+	app.use(express.logger('dev'));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+	//let's change this to a local dir? then rsync to media server or use nginx?
+	app.set('screenshots', './tmp');
 	app.set('view options', { pretty: true });
 	app.use(express.logger('dev'));
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
