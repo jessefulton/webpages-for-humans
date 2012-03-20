@@ -1,4 +1,20 @@
-extends layout
+h1 Create
+input(type="text", name="generateUrl", id="generateUrl")
+button(id="doGenerate")
 
-block content
-  h1 Screenshots
+h1 Screenshots
+
+- if (screenshots.length > 0)
+	.screenshots
+		- each screen in screenshots
+				.screenshot
+					h2 #{screen.title}
+						a(href="#{screen.url}") #{screen.url}
+					a(href="/#{screen.url}")
+						img(src="/#{screen.url}")
+
+script(type="text/javascript")
+	document.getElementById("doGenerate").onclick = function() {
+		var url = document.getElementById("generateUrl").value;
+		window.location = "/" + url;
+	}

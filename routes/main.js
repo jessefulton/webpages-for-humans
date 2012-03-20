@@ -16,7 +16,28 @@ var dir = app.set('screenshots')
  */
 
 app.get('/', function(req, res, next){
-  res.render('index');
+
+  var from = 0
+    , to = 10
+    , batch = new Batch;
+
+  db.zrange('screenshot:ids', from, to, function(err, ids){
+    if (err) return next(err);
+
+    // fetch
+    ids.forEach(function(id){
+      batch.push(function(fn){
+        db.hgetall('screenshot:' + id, fn);
+      });
+    });
+
+    // finished
+    batch.end(function(err, objs){
+      if (err) return next(err);
+      res.render('index', { layout: true, screenshots: objs });
+    })
+  });
+
 });
 
 /**

@@ -4,8 +4,4 @@ html
     title Screenshots
     link(rel='stylesheet', href='/stylesheets/main.css')
   body
-    block content
-    script(src='/javascripts/vendor/whiskers.js')
-    script(src='/javascripts/vendor/jquery.js')
-    script(src='/javascripts/app.js')
-    include templates/all
+    #content!= body
