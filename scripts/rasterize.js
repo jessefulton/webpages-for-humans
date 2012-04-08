@@ -22,7 +22,9 @@ page.open(url, function (status) {
 	  console.log("phantomjs: successfully opened URL");
     //page.render(path);
     //phantom.exit();
-    
+
+	page.injectJs('module-shim.js');    
+	page.injectJs('captchafy/lib/captchafy.js');
 	page.injectJs('captchafy.js');
 	
 	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
