@@ -34,7 +34,7 @@ app.get('/', function(req, res, next){
     // finished
     batch.end(function(err, objs){
       if (err) return next(err);
-      res.render('index', { layout: true, screenshots: objs });
+      res.render('index', { layout: false, screenshots: objs });
     })
   });
 
@@ -100,28 +100,37 @@ app.get('/:url(*)', function(req, res, next){
  */
 
 app.get('/:url(*)', function(req, res, next){
-  var url = utils.url(req.params.url);
-  if (!url) return res.send(400);
+	var url = utils.url(req.params.url);
+	if (!url) return next();
+	
+	
+	//var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	var expression = /(https?:\/\/)?([a-z0-9\.]+)?\.[a-z]{2,4}/gi;
+	var regex = new RegExp(expression);
+	 
+	//if we have a valid URL, then go fetch
+	if (url.match(regex)) {
+			console.log("fetching screenshot for " + url);
+		  var id = utils.md5(url);
+		
+		  var options = {
+			//TODO: render to .PDF instead of .PNG - then run tesseract on image
+			  path: join(dir, id + '.png')
+			, viewportWidth: req.query.width || app.set('default viewport width')
+			, viewportHeight: req.query.height || app.set('default viewport height')
+		  };
 
-  var id = utils.md5(url);
+		  rasterize(url, options, function(err){
+			if (err) return next(err);
+			console.log('screenshot - rasterized %s', url);
+			//magic!
+			app.emit('screenshot', url, options.path, id);
+			res.sendfile(options.path);
+		  }); 
+	}
+	else {
+		return next();
+	}
+ 
 
-  var options = {
-      path: join(dir, id + '.png')
-    , viewportWidth: req.query.width || app.set('default viewport width')
-    , viewportHeight: req.query.height || app.set('default viewport height')
-  };
-
-	/*
-  console.log('screenshot - rasterizing %s %dx%d'
-    , url
-    , options.viewportWidth
-    , options.viewportHeight);
-	*/
-  rasterize(url, options, function(err){
-    if (err) return next(err);
-    console.log('screenshot - rasterized %s', url);
-    //magic!
-    app.emit('screenshot', url, options.path, id);
-    res.sendfile(options.path);
-  });
 });

@@ -1,7 +1,17 @@
 !!!
-html
-  head
-    title Screenshots
-    link(rel='stylesheet', href='/stylesheets/main.css')
-  body
-    #content!= body
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(name="description", content="")
+		meta(name="author", content="")
+		title Webpages for Humans
+		link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+		script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-tab.js')
+	body
+		.container
+			ul.nav.nav-tabs
+				li.active: a(href="#about") About
+				li: a(href="#create") Create
+				li: a(href="#list") List
+		#content.container!= body

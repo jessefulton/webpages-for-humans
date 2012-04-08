@@ -257,7 +257,7 @@
 	var doIt = function() {	
 		var getTextNodesIn = function(el) {
 			var whitespace = /^\s*$/;
-			return $(el).find("*").andSelf().contents().filter(function() {
+			return jQuery(el).find("*").andSelf().contents().filter(function() {
 				return (this.nodeType == 3) && !whitespace.test(this.nodeValue);
 			});
 		};
@@ -265,7 +265,7 @@
 		var toColorString = function(rgbString) {
 			var parts = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 			// parts now should be ["rgb(0, 70, 255", "0", "70", "255"]
-			
+			console.log(parts);
 			delete (parts[0]);
 			for (var i = 1; i <= 3; ++i) {
 				parts[i] = parseInt(parts[i]).toString(16);
@@ -275,27 +275,27 @@
 		}
 		
 		try {	
-			getTextNodesIn($(document.body)).each(function() {
-				var fontSize = parseInt($(this.parentNode).css("font-size"));
+			getTextNodesIn(jQuery(document.body)).each(function() {
+				console.log(this);
+				var fontSize = parseInt(jQuery(this.parentNode).css("font-size"));
 				var text = this.nodeValue;
 
 				/*
 				console.log(text);
 				console.log("!!text = " + !!text);
 				console.log("!!fontSize = " + !!fontSize);
-				console.log("visible = " + ($(this.parentNode).is(':visible')));
+				console.log("visible = " + (jQuery(this.parentNode).is(':visible')));
 				console.log("============");
 				*/
-				
-				if (!!text && !!fontSize && ($(this.parentNode).is(':visible'))) {
 
-					var color = toColorString($(this.parentNode).css("color"));
+				if (!!text && !!fontSize && (jQuery(this.parentNode).is(':visible'))) {
+
+					var color = toColorString(jQuery(this.parentNode).css("color"));
 					//TODO: implement
 					var fontface = "Times";
 					var words = text.split(' ');
 					var replacements = [];
 					var canvas = document.createElement('canvas');				
-					
 					for (var i=0; i<words.length; i++) {
 						var word = words[i];
 						if (!word) { continue; }
@@ -317,7 +317,7 @@
 					}
 					
 					
-					$(this).replaceWith(replacements.join(' '));
+					jQuery(this).replaceWith(replacements.join(' '));
 
 				}
 				
@@ -328,8 +328,9 @@
 			//handle exception
 			console.log("error");
 			console.log(e);
+			throw e;
 		}
-		window.setTimeout(function(){$(document.body).addClass("captchafied");}, 1000);
+		window.setTimeout(function(){jQuery(document.body).addClass("captchafied");}, 1000);
 	};
 	
 	var check = window.setInterval(function() {

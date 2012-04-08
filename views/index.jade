@@ -1,20 +1,87 @@
-h1 Create
-input(type="text", name="generateUrl", id="generateUrl")
-button(id="doGenerate")
+!!!
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(name="description", content="")
+		meta(name="author", content="")
+		title Webpages for Humans
+		link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+	body
+		.container
+			.hero-unit
+				h1 Web Pages for Humans		
+			ul.nav.nav-tabs
+				li.active: a(href="#about", data-toggle="tab") About
+				li: a(href="#create", data-toggle="tab") Create
+				li: a(href="#list", data-toggle="tab") Gallery
+		#content.container
+			.tab-content
+				#about.tab-pane.active
+					.row
+						.span4
+							h1 What is this?
+							p 
+								| Web Pages for Humans is part of 
+								a(href="http://danm.ucsc.edu/~jesse") jesse fulton
+								| 's MFA thesis at the 
+								a(href="http://danm.ucsc.edu/") Digital Arts + New Media program at UC Santa Cruz
+								| .
+							p
+								| Web Pages for Humans is a web application which creates a version of the Internet which is only readable by humans. Screen-scraping technology is used to generate images of web pages which are then processed by OCR software to find machine-readable text on the page. This text is then manipulated and distorted within the image using CAPTCHA algorithms to create a machine-unreadable version of that web page.
+						.span4
+							h1 CAPTCHA-fy?
+							p
+								| What is a captcha? You know, 
+								a(href="#captcha-image", data-toggle="modal") like this
+							#captcha-image.modal.fade
+								.modal-header
+									a.close(data-dismiss="modal") x
+									h3 Sample CAPTCHA
+								.modal-body(style="text-align:center;")
+									img(src="/images/captcha-example.png")
+							p
+								| Google's reCAPTCHA project “digitizes” books, newspapers, and documents by exploiting human labour to decipher words which OCR algorithms are unable of “understanding.” These cultural artifacts are thus transformed into machine-readable computer files. Web Pages for Humans flips this model around, taking machine-generated, machine-readable documents and manipulating them with the CAPTCHA distortion algorithms to ensure that computers can no longer read their own content.
+						.span4
+							h1 CAPTCHA-why?
+							p
+								| Why is this important?
+							
+				#create.tab-pane
+					h1 Create
+					.form
+						p Enter a URL below to CAPTCHA-fy that page
+						p: input(type="text", name="generateUrl", id="generateUrl")
+						p: a.btn.btn-primary(id="doGenerate", href="#") Generate!
+				#list.tab-pane
+					h1 Screenshots
+					.row
+						- if (screenshots.length > 0)
+							ul.thumbnails
+								- each screen in screenshots
+										li.span3.offset1
+											a(href="/#{screen.url}", style="height:180px;display:block;overflow:hidden")
+												img(src="/#{screen.url}", width="260px")
+											h5 #{screen.title}
+												a(href="#{screen.url}") #{screen.url}
+			
 
-h1 Screenshots
+			script(type="text/javascript", src="http://platform.twitter.com/widgets.js")
+			script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
+			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-transition.js')
+			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-tab.js')
+			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-modal.js')
+			script(type="text/javascript")
+				//$('#captcha-image').modal({"show":false})
+				var doGenerate = function() {
+					var url = document.getElementById("generateUrl").value;
+					window.location = "/" + url;
+				}
 
-- if (screenshots.length > 0)
-	.screenshots
-		- each screen in screenshots
-				.screenshot
-					h2 #{screen.title}
-						a(href="#{screen.url}") #{screen.url}
-					a(href="/#{screen.url}")
-						img(src="/#{screen.url}")
-
-script(type="text/javascript")
-	document.getElementById("doGenerate").onclick = function() {
-		var url = document.getElementById("generateUrl").value;
-		window.location = "/" + url;
-	}
+				$("#doGenerate").on('click', doGenerate);
+				$("#generateUrl").on('keypress', function(event) {
+					if (event.which == 13) {
+						$("#doGenerate").click();
+						//doGenerate();
+					}
+				});

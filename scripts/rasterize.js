@@ -27,6 +27,14 @@ page.open(url, function (status) {
 	
 	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
 
+	page.onAlert = function (msg) { console.log("alert:" + msg); };
+	page.onConsoleMessage = function (msg) { console.log(msg); };
+	page.onError = function (msg, trace) {
+		console.log(msg);
+		trace.forEach(function(item) {
+			console.log('  ', item.file, ':', item.line);
+		})
+	}
 
 	waitFor(function() {
 			console.log("checking...");
@@ -42,7 +50,7 @@ page.open(url, function (status) {
 			console.log("rendered.");
 			page.render(path);
 			phantom.exit();
-		}, 5000
+		}, 30000
 	);        
 
     
