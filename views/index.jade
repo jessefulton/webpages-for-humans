@@ -7,6 +7,11 @@ html(lang="en")
 		meta(name="author", content="")
 		title Webpages for Humans
 		link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+		style(type="text/css")
+			.thumbnails .meta { text-align: center; }
+			.thumbnails .icon { padding-right: 4px; }
+			.thumbnail-nav { display:inline-block; width: 80px; }
+			.thumbnail-nav { display:inline-block; width: 80px; }
 	body
 		#header.container
 			.hero-unit
@@ -24,10 +29,16 @@ html(lang="en")
 							ul.thumbnails
 								- each screen in screenshots
 										li.span3.offset1
-											a(href="/#{screen.url}", style="height:180px;display:block;overflow:hidden")
-												img(src="/#{screen.url}", width="260px")
-											h5 #{screen.title}
-												a(href="#{screen.url}") #{screen.url}
+											.thumbnail(style="height:180px;display:block;overflow:hidden")
+												img(src="/image/#{screen.url}", width="260px")
+											.meta
+												.thumbnail-nav
+													i.icon.icon-eye-open 
+													a(href="/image/#{screen.url}")  preview
+												.thumbnail-nav
+													i.icon.icon-arrow-right 
+													a(href="/view/#{screen.url}") browse
+
 				#create.tab-pane
 					h1 Create
 					.form
@@ -102,7 +113,7 @@ html(lang="en")
 				//$('#captcha-image').modal({"show":false})
 				var doGenerate = function() {
 					var url = document.getElementById("generateUrl").value;
-					window.location = "/" + url;
+					window.location = "/image/" + url;
 				}
 
 				$("#doGenerate").on('click', doGenerate);

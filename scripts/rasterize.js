@@ -1,8 +1,11 @@
+var fs = require('fs');
+
 console.log("executing phantomjs rasterize.js");
 var page = require('webpage').create()
   , url = phantom.args[0]
   , path = phantom.args[1]
-  , size = phantom.args[2] || '';
+  , id = phantom.args[2]
+  , size = phantom.args[3] || '';
 
 if (!url) throw new Error('url required');
 if (!path) throw new Error('output path required');
@@ -25,7 +28,6 @@ page.open(url, function (status) {
 
 	page.injectJs('module-shim.js');    
 	page.injectJs('captchafy/lib/captchafy.js');
-	page.injectJs('captchafy.js');
 	
 	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
 
@@ -38,19 +40,126 @@ page.open(url, function (status) {
 		})
 	}
 
+	page.evaluate(function() {
+		(function() {
+			
+			var _captchafy = module.exports;
+			
+			
+			if (typeof(window.jQuery) != 'function') {
+				console.log('no jquery');
+				var s=document.createElement('script');
+				s.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+				document.getElementsByTagName('body')[0].appendChild(s);
+			}
+			else {
+				console.log('already had jquery');
+			}
+		
+			var doIt = function() {	
+				console.log('about to doIt()');
+				console.log(_captchafy);
+				_captchafy.captchafyText(jQuery, jQuery(document.body), function() {
+					jQuery(document.body).addClass("captchafied");
+				});
+			};
+			
+			var check = window.setInterval(function() {
+				console.log('inside "check"');
+				if (typeof(window.jQuery) == 'function') {
+					window.clearInterval(check);
+					doIt();
+				}
+			}, 250);
+			
+		})();
+	});
+
+
 	waitFor(function() {
 			console.log("checking...");
 			// Check in the page if a specific element is now visible
 			var cn = page.evaluate(function() {
 				return document.body.className;
 			});
-			var mgn = page.evaluate(function() { return document.body.innerHTML; });
+			
+			
+			/*
+			var theHtml = page.evaluate(function() {
+				var dt = document.doctype;
+				var doctype = '<!DOCTYPE '+ 
+					dt.name+' PUBLIC "'+ //maybe you should check for publicId first
+					dt.publicId+'" "'+
+					dt.systemId+'">';
+				return doctype + document.documentElement.outerHTML;
+			});
+			
+
+			//fs - see http://code.google.com/p/phantomjs/wiki/Interface#Filesystem_Module
+			fs.write(htmlFolder + filenameRoot + ".html"
+				, theHtml
+				, "w"
+			); 
+			
+			*/
+			
+			var mgn = page.evaluate(function() { return document.body.outerHTML;});
 			//console.log(mgn);
 			//console.log(cn);
 			return cn.indexOf("captchafied") != -1;
 		}, function() {
 			console.log("rendered.");
-			page.render(path);
+			page.render(path + id + ".png");
+			
+			var theHtml = page.evaluate(function() {
+			
+				//ugly hack to set URLs to absolute	
+				var foundLinks = document.body.querySelectorAll("a[href]:not([href^='javascript:']):not([href*=doubleclick]):not([href^='itpc://']):not([href^='zune://']):not([href^='#'])");		
+			
+				var dummyA = document.createElement('a');
+				for(var i=0; i<foundLinks.length; i++) {
+					var el = foundLinks[i];
+					dummyA.href = el.href
+					el.href = "/view/" + dummyA.href;
+				}
+
+				foundLinks = document.querySelectorAll("link[href]");		
+				for(var i=0; i<foundLinks.length; i++) {
+					var el = foundLinks[i];
+					dummyA.href = el.href
+					el.href = dummyA.href;
+				}
+				
+				foundLinks = document.querySelectorAll("script[src],img[src]");		
+				for(var i=0; i<foundLinks.length; i++) {
+					var el = foundLinks[i];
+					dummyA.href = el.src
+					el.src = dummyA.href;
+				}
+
+
+			
+			
+				var dt = document.doctype;
+				var doctype = '<!DOCTYPE '+ 
+					dt.name+' PUBLIC "'+ //maybe you should check for publicId first
+					dt.publicId+'" "'+
+					dt.systemId+'">';
+				return doctype + document.documentElement.outerHTML;
+			});
+			
+
+			//fs - see http://code.google.com/p/phantomjs/wiki/Interface#Filesystem_Module
+			fs.write(path + id + ".html"
+				, theHtml
+				, "w"
+			); 
+			
+			
+
+			
+			
+			
 			phantom.exit();
 		}, 30000
 	);        

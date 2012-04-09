@@ -6,14 +6,14 @@ var db = app.db;
  * Set screenshot:<id> hash.
  */
 
-app.on('screenshot', function(url, path, id){
+app.on('render', function(url, path, id){
   var now = Date.now();
-  console.log('screenshot - saving meta-data');
-  db.hset('screenshot:url:id', url, id);
-  db.zadd('screenshot:ids', now, id);
-  db.zadd('screenshot:urls', now, url);
-  db.zadd('screenshot:hosts', now, parse(url).host);
-  db.hmset('screenshot:' + id, {
+  console.log('render - saving meta-data');
+  db.hset('render:url:id', url, id);
+  db.zadd('render:ids', now, id);
+  db.zadd('render:urls', now, url);
+  db.zadd('render:hosts', now, parse(url).host);
+  db.hmset('render:' + id, {
     created_at: now,
     path: path,
     url: url,
@@ -25,6 +25,6 @@ app.on('screenshot', function(url, path, id){
  * Screenshot statistics.
  */
 
-app.on('screenshot', function(url, path, id){
-  db.hincrby('screenshot:stats', 'total', 1);
+app.on('render', function(url, path, id){
+  db.hincrby('render:stats', 'total', 1);
 });
