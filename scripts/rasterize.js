@@ -140,11 +140,17 @@ page.open(url, function (status) {
 
 			
 			
-				var dt = document.doctype;
-				var doctype = '<!DOCTYPE '+ 
-					dt.name+' PUBLIC "'+ //maybe you should check for publicId first
-					dt.publicId+'" "'+
-					dt.systemId+'">';
+
+				var doctype = "";
+				
+				try {
+					var dt = document.doctype;
+					doctype = '<!DOCTYPE '+ 
+						dt.name+' PUBLIC "'+ //maybe you should check for publicId first
+						dt.publicId+'" "'+
+						dt.systemId+'">';
+				}
+				catch(e) { console.log("error creating doctype"); }
 				return doctype + document.documentElement.outerHTML;
 			});
 			
