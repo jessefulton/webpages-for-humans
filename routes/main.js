@@ -18,8 +18,8 @@ var dir = app.set('screenshots')
 
 app.get('/', function(req, res, next){
 
-  var from = 0
-    , to = 10
+  var from = -4
+    , to = -1
     , batch = new Batch;
 
   db.zrange('render:ids', from, to, function(err, ids){

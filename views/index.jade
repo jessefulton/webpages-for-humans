@@ -12,39 +12,40 @@ html(lang="en")
 			.thumbnails .icon { padding-right: 4px; }
 			.thumbnail-nav { display:inline-block; width: 80px; }
 			.thumbnail-nav { display:inline-block; width: 80px; }
+			.row { margin-top: 5px; margin-bottom: 15px; }
 	body
 		#header.container
 			.hero-unit
-				h1 Webpages for Humans		
+				h1 Webpages for Humans
+				
+
+				p.form-inline Surf the human web. Enter a URL to begin: 
+					input(type="text", name="generateUrl", id="generateUrl")
+					button.btn.btn-primary(id="doGenerate", href="#") Go!
+				
 			ul.nav.nav-tabs
-				li.active: a(href="#list", data-toggle="tab") Gallery
-				li: a(href="#create", data-toggle="tab") Create
+				li.active: a(href="#list", data-toggle="tab") History
 				li: a(href="#about", data-toggle="tab") About
 		#content.container
 			.tab-content
 				#list.tab-pane.active
-					h1 Screenshots
 					.row
-						- if (screenshots.length > 0)
-							ul.thumbnails
-								- each screen in screenshots
-										li.span3.offset1
-											.thumbnail(style="height:180px;display:block;overflow:hidden")
-												img(src="/image/#{screen.url}", width="260px")
-											.meta
-												.thumbnail-nav
-													i.icon.icon-eye-open 
-													a(href="/image/#{screen.url}")  preview
-												.thumbnail-nav
-													i.icon.icon-arrow-right 
-													a(href="/view/#{screen.url}") browse
+						.span12
+							h1 Or see where others have been
+							- if (screenshots.length > 0)
+								ul.thumbnails
+									- each screen in screenshots
+											li.span3.offset1
+												.thumbnail(style="height:180px;display:block;overflow:hidden")
+													img(src="/image/#{screen.url}", width="260px")
+												.meta
+													.thumbnail-nav
+														i.icon.icon-eye-open 
+														a(href="/image/#{screen.url}")  preview
+													.thumbnail-nav
+														i.icon.icon-arrow-right 
+														a(href="/view/#{screen.url}") browse
 
-				#create.tab-pane
-					h1 Create
-					.form
-						p Enter a URL below to CAPTCHA-fy that page
-						p: input(type="text", name="generateUrl", id="generateUrl")
-						p: a.btn.btn-primary(id="doGenerate", href="#") Generate!
 				#about.tab-pane
 					.row
 						.span4
@@ -78,11 +79,11 @@ html(lang="en")
 								a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
 								|  (the "unknown" word); and a second word which the OCR software 
 								em could
-								|  decipher (the "known" word.) The user is then prompted to type in both words, with the assumption being that if the user can correctly identify the known word, then their interpretation of the 
+								|  decipher (the "known" word.) The user is then prompted to type in both words, with the assumption being that if the known word is correctly identified, then the identification of the 
 								em unknown
 								|  word is also likely to be correct
 								sup: a(href="http://www.google.com/recaptcha/learnmore") source
-								| . This human translation for the unknown word is then stored, filling in the gaps remaining from the OCR translation.
+								| . This human translation for the unknown word is then added to the original OCR translation.
 
 						.span4
 							h1 CAPTCHA-why?
@@ -113,7 +114,8 @@ html(lang="en")
 				//$('#captcha-image').modal({"show":false})
 				var doGenerate = function() {
 					var url = document.getElementById("generateUrl").value;
-					window.location = "/image/" + url;
+					window.location = "/view/" + url;
+					return false;
 				}
 
 				$("#doGenerate").on('click', doGenerate);
