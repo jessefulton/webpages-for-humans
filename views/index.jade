@@ -8,9 +8,9 @@ html(lang="en")
 		title Webpages for Humans
 		link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
 	body
-		.container
+		#header.container
 			.hero-unit
-				h1 Web Pages for Humans		
+				h1 Webpages for Humans		
 			ul.nav.nav-tabs
 				li.active: a(href="#about", data-toggle="tab") About
 				li: a(href="#create", data-toggle="tab") Create
@@ -22,31 +22,55 @@ html(lang="en")
 						.span4
 							h1 What is this?
 							p 
-								| Web Pages for Humans is part of 
-								a(href="http://danm.ucsc.edu/~jesse") jesse fulton
+								strong Webpages for Humans
+								|  is part of 
+								a(href="http://danm.ucsc.edu/~jesse") Jesse Fulton
 								| 's MFA thesis at the 
 								a(href="http://danm.ucsc.edu/") Digital Arts + New Media program at UC Santa Cruz
 								| .
 							p
-								| Web Pages for Humans is a web application which creates a version of the Internet which is only readable by humans. Screen-scraping technology is used to generate images of web pages which are then processed by OCR software to find machine-readable text on the page. This text is then manipulated and distorted within the image using CAPTCHA algorithms to create a machine-unreadable version of that web page.
+								strong Webpages for Humans
+								|  is a web application that creates a version of the Internet which is only readable by humans. Screen-scraping technology is used to generate images of webpages which are then processed by 
+								a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") Optical Character Recognition software
+								|  to find machine-readable text on the page. This text is then 
+								strong: em CAPTCHA-fied
+								|  to create a distorted and manipulated rendering of that webpage. All text on these pages which had previously been machine-readable, is distorted using the same algorithms used in CAPTCHA tests to ensure the computer programs cannot decipher text.
 						.span4
 							h1 CAPTCHA-fy?
 							p
-								| What is a captcha? You know, 
+								| CAPTCHAs are the images of distorted text you must translate to do things like sign up for an account or post a comment on a website,  
 								a(href="#captcha-image", data-toggle="modal") like this
+								| . They're used to prevent spam by determining if the user of a site is a human, or a computer program (often referred to as a "bot.")
+							p	
+								| A CAPTCHA test generally consists of two images of text: a word that cannot be read correctly by 
+								a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
+								| ; and another word for which the answer is already known. The user is then asked to read both words. If they solve the one for which the answer is known, the system assumes their answer is correct for the new one
+								sup: a(href="http://www.google.com/recaptcha/learnmore") source
+								| . The human translation is then stored, filling in the gaps remaining from the computer's efforts.
 							#captcha-image.modal.fade
 								.modal-header
 									a.close(data-dismiss="modal") x
 									h3 Sample CAPTCHA
 								.modal-body(style="text-align:center;")
 									img(src="/images/captcha-example.png")
-							p
-								| Google's reCAPTCHA project “digitizes” books, newspapers, and documents by exploiting human labour to decipher words which OCR algorithms are unable of “understanding.” These cultural artifacts are thus transformed into machine-readable computer files. Web Pages for Humans flips this model around, taking machine-generated, machine-readable documents and manipulating them with the CAPTCHA distortion algorithms to ensure that computers can no longer read their own content.
 						.span4
 							h1 CAPTCHA-why?
 							p
-								| Why is this important?
-							
+								| When Google digitizes physical books (as part of its Google Books project),
+								a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
+								|  is used to "read" the scanned pages and make it searchable and indexable. However, sometimes the computer algorithms fail on certain words due to scan irregularites, low print quality, or similar problems. At this point, the only way to decipher the digitized text with a human eye.
+							p
+								| This massive undertaking requires an enourmous amount of human labour (Google is attempting to digitize every piece of writing in existence.) 
+								a(href="http://www.google.com/recaptcha") reCAPTCHA
+								|  is the most popular CAPTCHA service on the Internet, and is used to distribute this task of human translation across the web.
+								
+					#footer.container
+						.row.alert(style="background-color:#222;color:#eee")
+							.span4.offset4
+								i.icon-question-sign.icon-white 
+								| interested in the tech? check out 
+								a(href="https://github.com/jessefulton/webpages-for-humans") the code
+
 				#create.tab-pane
 					h1 Create
 					.form
@@ -64,7 +88,6 @@ html(lang="en")
 												img(src="/#{screen.url}", width="260px")
 											h5 #{screen.title}
 												a(href="#{screen.url}") #{screen.url}
-			
 
 			script(type="text/javascript", src="http://platform.twitter.com/widgets.js")
 			script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
