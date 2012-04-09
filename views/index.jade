@@ -12,12 +12,29 @@ html(lang="en")
 			.hero-unit
 				h1 Webpages for Humans		
 			ul.nav.nav-tabs
-				li.active: a(href="#about", data-toggle="tab") About
+				li.active: a(href="#list", data-toggle="tab") Gallery
 				li: a(href="#create", data-toggle="tab") Create
-				li: a(href="#list", data-toggle="tab") Gallery
+				li: a(href="#about", data-toggle="tab") About
 		#content.container
 			.tab-content
-				#about.tab-pane.active
+				#list.tab-pane.active
+					h1 Screenshots
+					.row
+						- if (screenshots.length > 0)
+							ul.thumbnails
+								- each screen in screenshots
+										li.span3.offset1
+											a(href="/#{screen.url}", style="height:180px;display:block;overflow:hidden")
+												img(src="/#{screen.url}", width="260px")
+											h5 #{screen.title}
+												a(href="#{screen.url}") #{screen.url}
+				#create.tab-pane
+					h1 Create
+					.form
+						p Enter a URL below to CAPTCHA-fy that page
+						p: input(type="text", name="generateUrl", id="generateUrl")
+						p: a.btn.btn-primary(id="doGenerate", href="#") Generate!
+				#about.tab-pane
 					.row
 						.span4
 							h1 What is this?
@@ -70,24 +87,6 @@ html(lang="en")
 								i.icon-question-sign.icon-white 
 								| interested in the tech? check out 
 								a(href="https://github.com/jessefulton/webpages-for-humans") the code
-
-				#create.tab-pane
-					h1 Create
-					.form
-						p Enter a URL below to CAPTCHA-fy that page
-						p: input(type="text", name="generateUrl", id="generateUrl")
-						p: a.btn.btn-primary(id="doGenerate", href="#") Generate!
-				#list.tab-pane
-					h1 Screenshots
-					.row
-						- if (screenshots.length > 0)
-							ul.thumbnails
-								- each screen in screenshots
-										li.span3.offset1
-											a(href="/#{screen.url}", style="height:180px;display:block;overflow:hidden")
-												img(src="/#{screen.url}", width="260px")
-											h5 #{screen.title}
-												a(href="#{screen.url}") #{screen.url}
 
 			script(type="text/javascript", src="http://platform.twitter.com/widgets.js")
 			script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
