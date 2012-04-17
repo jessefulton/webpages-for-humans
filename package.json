@@ -1,6 +1,14 @@
 {
-    "name": "screenshots"
+    "name": "WebpagesForHumans"
+  , "author": "Jesse Fulton <jesse.fulton@gmail.com>"
+  , "description": "Webpages for Humans: DANM MFA thesis project"
   , "version": "0.0.1"
+  , "contributors": [ 
+    {
+      "name": "Jesse Fulton",
+      "email": "jessefulton@gmail.com"
+    } 
+  ]
   , "dependencies": {
       "express": "2.5.x"
     , "jade": "*"
