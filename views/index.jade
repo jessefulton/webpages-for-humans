@@ -13,6 +13,13 @@ html(lang="en")
 			.thumbnail-nav { display:inline-block; width: 80px; }
 			.thumbnail-nav { display:inline-block; width: 80px; }
 			.row { margin-top: 5px; margin-bottom: 15px; }
+			.hero-unit h1
+			, .hero-unit .form-inline
+			, .hero-unit #bookmarklet { text-align: right; padding-right: 80px; }
+			.hero-unit .form-inline {margin-top: 20px; }
+			#bookmarklet { font-style: italic; text-align: right; margin-top: 20px; }
+			.hero-unit { padding-bottom: 20px; }
+			#bookmarklet a { font-style: normal; }
 	body
 		#header.container
 			.hero-unit
@@ -21,14 +28,14 @@ html(lang="en")
 
 				p.form-inline Surf the human web. Enter a URL to begin: 
 					input(type="text", name="generateUrl", id="generateUrl")
-					button.btn.btn-primary(id="doGenerate", href="#") Go!
-				
+					button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+				#bookmarklet Or grab the bookmarklet: 
+					a.btn.btn-info.btn-mini(href="#{bookmarklet}", rel="tooltip", title="Drag me to your toolbar!") CAPTCHA-fy!				
 			ul.nav.nav-tabs
 				li.active: a(href="#list", data-toggle="tab") History
 				li: a(href="#about", data-toggle="tab") About
 				
-			.bookmarklet
-				a(href="#{bookmarklet}") Bookmarklet!
+
 		#content.container
 			.tab-content
 				#list.tab-pane.active
@@ -112,8 +119,10 @@ html(lang="en")
 			script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
 			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-transition.js')
 			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-tab.js')
+			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-tooltip.js')
 			script(type='text/javascript', src='/bootstrap-ui/js/bootstrap-modal.js')
 			script(type="text/javascript")
+				$('#bookmarklet a').tooltip({})
 				//$('#captcha-image').modal({"show":false})
 				var doGenerate = function() {
 					var url = document.getElementById("generateUrl").value;
