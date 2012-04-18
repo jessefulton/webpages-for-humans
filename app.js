@@ -47,6 +47,28 @@ require('./routes');
 
 
 
+app.helpers({
+		"dateFormat": function(dateObj){ 
+			return dateObj.getMonth() + "/" + dateObj.getDate() + "/" + dateObj.getFullYear();
+		}
+		, "dateTimeFormat": function(dateObj){ 
+			//TODO: clean up time to 12 hour clock?
+			return dateObj.getMonth() + "/" + dateObj.getDate() + "/" + dateObj.getFullYear() + " " + dateObj.getHours() + ":" + dateObj.getMinutes();
+		}
+		, "percentage": function(num) {
+			return Math.round(num * 100) + "%";
+		}
+		, "isNumber": function(num) {
+			return (typeof(num) == "number") && !isNaN(num);
+		}
+		, "bookmarklet": 'javascript:(function(e,a,g,h,f,c,b,d){if(!(f=e.jQuery)||g>f.fn.jquery||h(f)){c=a.createElement("script");c.type="text/javascript";c.src="http://ajax.googleapis.com/ajax/libs/jquery/"+g+"/jquery.min.js";c.onload=c.onreadystatechange=function(){if(!b&&(!(d=this.readyState)||d=="loaded"||d=="complete")){h((f=e.jQuery).noConflict(1),b=1);f(c).remove()}};a.documentElement.childNodes[0].appendChild(c)}})(window,document,"1.7.1",function($,L){var jsCode = document.createElement("script");jsCode.setAttribute("src", "https://raw.github.com/jessefulton/webpages-for-humans/master/public/javascripts/bookmarklet.js");document.body.appendChild(jsCode);});'
+		//via http://beardscratchers.com/journal/using-javascript-to-get-the-hostname-of-a-url
+		, "hostname": function(str) {
+			var re = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+			return str.match(re)[1].toString();
+		}
+});
+
 
 /**
  * Start it.
