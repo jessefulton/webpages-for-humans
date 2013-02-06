@@ -27,7 +27,7 @@ page.open(url, function (status) {
     //phantom.exit();
 
 	page.injectJs('module-shim.js');    
-	page.injectJs('captchafy/lib/captchafy.js');
+	page.injectJs('../node_modules/captchafy/lib/captchafy.js');
 	
 	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
 

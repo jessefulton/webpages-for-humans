@@ -15,5 +15,6 @@
     , "redis": "0.7.x"
     , "redis-url": "0.0.1"
     , "stylus": "0.21.x"
+    , "captchafy": "git://github.com/jessefulton/node-captchafy.git#master"
   }
 }
