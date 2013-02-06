@@ -86,7 +86,11 @@ app.get('/image/:url(*)', function(req, res, next){
 		  };
 
 		  rasterize(url, options, function(err){
-			if (err) return next(err);
+			if (err) {
+				console.log("Error rasterizing (html) " + url);
+				console.log(err);
+				return next(err);
+			}
 			console.log('screenshot - rasterized %s', url);
 			//magic!
 			app.emit('render', url, options.path, id);
@@ -94,6 +98,8 @@ app.get('/image/:url(*)', function(req, res, next){
 		  }); 
 	}
 	else {
+		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
+		console.log(err);
 		return next();
 	}
 });
@@ -112,7 +118,11 @@ app.get('/view/:url(*)', function(req, res, next){
     if (err) return next(err);
     if (!id) return next();
     db.hget('render:' + id, 'path', function(err, path){
-      if (err) return next(err);
+      if (err) {
+      	console.log("Error finding HTML for URL " + url);
+      	console.log(err);
+      	return next(err);
+      }
       console.log('screenshot - serving rasterized %s', url);
       res.sendfile(path + id + ".html");
     });
@@ -147,7 +157,11 @@ app.get('/view/:url(*)', function(req, res, next){
 		  };
 
 		  rasterize(url, options, function(err){
-			if (err) return next(err);
+			if (err) {
+				console.log("Error rasterizing image " + url);
+				console.log(err);
+				return next(err);
+			}
 			console.log('screenshot - rasterized %s', url);
 			//magic!
 			app.emit('render', url, options.path, id);
@@ -155,6 +169,8 @@ app.get('/view/:url(*)', function(req, res, next){
 		  }); 
 	}
 	else {
+		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
+		console.log(err);
 		return next();
 	}
 });

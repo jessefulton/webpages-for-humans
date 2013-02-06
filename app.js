@@ -1,3 +1,6 @@
+// heroku PATH=/usr/local/bin:/usr/bin:/bin:/app/vendor/phantomjs/bin
+
+
 /**
  * Module dependencies.
  */

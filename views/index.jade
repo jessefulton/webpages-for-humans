@@ -45,7 +45,7 @@ html(lang="en")
 							- if (screenshots.length > 0)
 								ul.thumbnails
 									- each screen in screenshots
-										if (screenshots.url)
+										if (screen.url)
 											li.span3.offset1
 												.thumbnail(style="height:180px;display:block;overflow:hidden")
 													img(src="/image/#{screen.url}", width="260px")
