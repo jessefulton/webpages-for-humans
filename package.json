@@ -12,7 +12,7 @@
   , "dependencies": {
       "express": "2.5.x"
     , "jade": "*"
-    , "redis": "0.7.x"
+    , "redis": "0.7.1"
     , "redis-url": "0.0.1"
     , "stylus": "0.21.x"
     , "captchafy": "git://github.com/jessefulton/node-captchafy.git#master"
