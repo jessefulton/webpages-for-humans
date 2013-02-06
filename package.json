@@ -17,4 +17,8 @@
     , "stylus": "0.21.x"
     , "captchafy": "git://github.com/jessefulton/node-captchafy.git#master"
   }
+  , "engines": {
+      "node": "0.8.x"
+    , "npm": "1.1.x"
+  }
 }
