@@ -1,3 +1,0 @@
-[submodule "scripts/captchafy"]
-	path = scripts/captchafy
-	url = https://github.com/jessefulton/node-captchafy.git
