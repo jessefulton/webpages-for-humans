@@ -1,2 +1,2 @@
-db: redis-server ./db/db.conf
+db: redis-server
 web: node app.js
