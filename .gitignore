@@ -2,3 +2,4 @@
 node_modules
 **.rdb
 public/renders
+public/stylesheets/*.css

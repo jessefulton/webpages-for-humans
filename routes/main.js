@@ -9,7 +9,7 @@ var rasterize = require('../lib/rasterize')
   , join = path.join
   , fs = require('fs');
 
-var dir = app.set('screenshots')
+var dir = app.get('screenshots')
   , db = app.db;
 
 /*
@@ -81,8 +81,8 @@ app.get('/image/:url(*)', function(req, res, next){
 			//TODO: render to .PDF instead of .PNG - then run tesseract on image
 			  "path": dir
 			, "id": id
-			, "viewportWidth": req.query.width || app.set('default viewport width')
-			, "viewportHeight": req.query.height || app.set('default viewport height')
+			, "viewportWidth": req.query.width || app.get('default viewport width')
+			, "viewportHeight": req.query.height || app.get('default viewport height')
 		  };
 
 		  rasterize(url, options, function(err){
@@ -152,8 +152,8 @@ app.get('/view/:url(*)', function(req, res, next){
 			//TODO: render to .PDF instead of .PNG - then run tesseract on image
 			  "path": dir
 			, "id": id
-			, "viewportWidth": req.query.width || app.set('default viewport width')
-			, "viewportHeight": req.query.height || app.set('default viewport height')
+			, "viewportWidth": req.query.width || app.get('default viewport width')
+			, "viewportHeight": req.query.height || app.get('default viewport height')
 		  };
 
 		  rasterize(url, options, function(err){
