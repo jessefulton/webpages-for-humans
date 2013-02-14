@@ -1,6 +1,11 @@
 var fs = require('fs');
 
-console.log("executing phantomjs rasterize.js");
+var DEBUG = false;
+function debug() {
+	if (DEBUG) { console.log.apply(arguments); }
+}
+
+debug("executing phantomjs rasterize.js");
 var page = require('webpage').create()
   , url = phantom.args[0]
   , path = phantom.args[1]
@@ -17,12 +22,12 @@ page.viewportSize = {
   , height: ~~size[1] || 600
 };
 
-console.log("phantomjs: setup viewport");
+debug("phantomjs: setup viewport");
 
 
 page.open(url, function (status) {
   if (status == 'success') {
-	  console.log("phantomjs: successfully opened URL");
+	  debug("phantomjs: successfully opened URL");
     //page.render(path);
     //phantom.exit();
 
@@ -31,13 +36,19 @@ page.open(url, function (status) {
 	
 	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
 
-	page.onAlert = function (msg) { console.log("alert:" + msg); };
-	page.onConsoleMessage = function (msg) { console.log(msg); };
+	page.onAlert = function (msg) { 
+		//debug("ALERT: " + msg);
+	};
+	page.onConsoleMessage = function (msg) {
+		//debug("CONSOLE: " + msg);
+	};
 	page.onError = function (msg, trace) {
-		console.log(msg);
+		/*
+		debug("ERROR: " + msg);
 		trace.forEach(function(item) {
-			console.log('  ', item.file, ':', item.line);
+			debug('  ', item.file, ':', item.line);
 		})
+		*/
 	}
 
 	page.evaluate(function() {
@@ -47,25 +58,25 @@ page.open(url, function (status) {
 			
 			
 			if (typeof(window.jQuery) != 'function') {
-				console.log('no jquery');
+				//console.log('no jquery');
 				var s=document.createElement('script');
 				s.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
 				document.getElementsByTagName('body')[0].appendChild(s);
 			}
 			else {
-				console.log('already had jquery');
+				//console.log('already had jquery');
 			}
 		
 			var doIt = function() {	
-				console.log('about to doIt()');
-				console.log(_captchafy);
+				//console.log('about to doIt()');
+				//console.log(_captchafy);
 				_captchafy.captchafyText(jQuery, jQuery(document.body), function() {
 					jQuery(document.body).addClass("captchafied");
 				});
 			};
 			
 			var check = window.setInterval(function() {
-				console.log('inside "check"');
+				//console.log('inside "check"');
 				if (typeof(window.jQuery) == 'function') {
 					window.clearInterval(check);
 					doIt();
@@ -77,7 +88,7 @@ page.open(url, function (status) {
 
 
 	waitFor(function() {
-			console.log("checking...");
+			debug("checking...");
 			// Check in the page if a specific element is now visible
 			var cn = page.evaluate(function() {
 				return document.body.className;
@@ -104,11 +115,11 @@ page.open(url, function (status) {
 			*/
 			
 			var mgn = page.evaluate(function() { return document.body.outerHTML;});
-			//console.log(mgn);
-			//console.log(cn);
+			//debug(mgn);
+			//debug(cn);
 			return cn.indexOf("captchafied") != -1;
 		}, function() {
-			console.log("rendered.");
+			debug("rendered.");
 			page.render(path + id + ".png");
 			
 			var theHtml = page.evaluate(function() {
@@ -150,7 +161,7 @@ page.open(url, function (status) {
 						dt.publicId+'" "'+
 						dt.systemId+'">';
 				}
-				catch(e) { console.log("error creating doctype"); }
+				catch(e) { debug("error creating doctype"); }
 				return doctype + document.documentElement.outerHTML;
 			});
 			
@@ -162,6 +173,7 @@ page.open(url, function (status) {
 			); 
 			
 			
+			console.log (theHtml);
 
 			
 			
@@ -172,8 +184,9 @@ page.open(url, function (status) {
 
     
   } else {
-	  console.log("phantomjs: could not open URL: " + status);
-    throw new Error('failed to load ' + url);
+	  debug("phantomjs: could not open URL: " + status);
+	  throw new Error('failed to load ' + url);
+	  phantom.exit(1);
   }
 });
 
@@ -206,11 +219,11 @@ function waitFor(testFx, onReady, timeOutMillis) {
             } else {
                 if(!condition) {
                     // If condition still not fulfilled (timeout but condition is 'false')
-                    console.log("'waitFor()' timeout");
+                    debug("'waitFor()' timeout");
                     phantom.exit(1);
                 } else {
                     // Condition fulfilled (timeout and/or condition is 'true')
-                    console.log("'waitFor()' finished in " + (new Date().getTime() - start) + "ms.");
+                    debug("'waitFor()' finished in " + (new Date().getTime() - start) + "ms.");
                     typeof(onReady) === "string" ? eval(onReady) : onReady(); //< Do what it's supposed to do once the condition is fulfilled
                     clearInterval(interval); //< Stop this interval
                 }

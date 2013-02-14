@@ -1,6 +1,7 @@
 
 
 var rasterize = require('../lib/rasterize')
+	, stream = require('../lib/stream')
 //  , imagemap = require('../lib/imagemap')
   , ratelimit = require('../lib/ratelimit')
   , Batch = require('../lib/batch')
@@ -156,6 +157,9 @@ app.get('/view/:url(*)', function(req, res, next){
 			, "viewportHeight": req.query.height || app.get('default viewport height')
 		  };
 
+		  stream(url, options, function(err){}, res);
+
+		  /*
 		  rasterize(url, options, function(err){
 			if (err) {
 				console.log("Error rasterizing image " + url);
@@ -167,6 +171,7 @@ app.get('/view/:url(*)', function(req, res, next){
 			app.emit('render', url, options.path, id);
 			res.sendfile(options.path + id + ".html");
 		  }); 
+		  */
 	}
 	else {
 		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
