@@ -28,23 +28,46 @@ html(lang="en")
             p.form-inline Surf the human web. Enter a URL to begin: 
                 input(type="text", name="generateUrl", id="generateUrl")
                 button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                a(href="/about", id="aboutButton") About?
 
         #content.container
-            iframe(id="viewport", src="/about", style="width:100%;height:90%")
+            iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0")
 
 
         script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
+        script(type="text/javascript", src="https://raw.github.com/blixt/js-hash/master/Hash.js")
+        script(type="text/javascript", src="https://raw.github.com/blixt/js-hash/master/jquery/jquery.hash.js")
         script(type="text/javascript")
           //$('#bookmarklet a').tooltip({})
           //$('#captcha-image').modal({"show":false})
           var doGenerate = function() {
               var url = document.getElementById("generateUrl").value;
               //window.location = "/view/" + url;
-              $("#viewport").attr("src", "/view/" + url);
+              $.hash.go("/view/" + url);
+              return false;
+              //return goTo("/view/" + url);
+          }
+          var goTo = function(url) {
+            if (url) {
+              
+              var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+              iDoc.location.replace(url);
+            }
+              //.attr("src", url);
+              //$.hash.go(url);
               return false;
           }
 
+
+          $("body").hashchange(function(e, newHash) {
+            console.log(arguments);
+            goTo(newHash);
+          })
+          $.hash.init();
+
           $("#doGenerate").on('click', doGenerate);
+          $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
+
           $("#generateUrl").on('keypress', function(event) {
               if (event.which == 13) {
                   $("#doGenerate").click();
