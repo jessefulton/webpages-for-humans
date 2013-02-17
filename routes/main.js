@@ -179,3 +179,10 @@ app.get('/view/:url(*)', function(req, res, next){
 		return next();
 	}
 });
+
+
+app.get('/about', function(req, res, next){
+      res.render('about', { layout: false });
+});
+
+
