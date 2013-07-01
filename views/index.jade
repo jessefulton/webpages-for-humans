@@ -23,21 +23,14 @@ html(lang="en")
             #bookmarklet a { font-style: normal; }
             #header { height:10%; width: 100%; margin:0; padding: 0; overflow:hidden; }
             #content { width: 100%; height:90%; margin:0; padding:0; }
-    body
-        #header.container
-            p.form-inline Surf the human web. Enter a URL to begin: 
-                input(type="text", name="generateUrl", id="generateUrl")
-                button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                a(href="/about", id="aboutButton") About?
-
-        #content.container
-            iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0")
-
 
         script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
         script(type="text/javascript", src="/js-hash/Hash.js")
         script(type="text/javascript", src="/js-hash/jquery.hash.js")
         script(type="text/javascript")
+
+          var iframeChanged = function(where) { onHashChange(null, where.href, true); }
+
           //$('#bookmarklet a').tooltip({})
           //$('#captcha-image').modal({"show":false})
           var doGenerate = function() {
@@ -58,11 +51,25 @@ html(lang="en")
               return false;
           }
 
-
-          $("body").hashchange(function(e, newHash) {
+          var onHashChange = function(event, newHash, bypass) {
             console.log(arguments);
-            goTo(newHash);
-          })
+            document.getElementById("generateUrl").value = newHash.replace(/^\/view\//g, "");
+            if (!bypass) goTo(newHash);
+          };
+
+    body
+        #header.container
+            p.form-inline Surf the human web. Enter a URL to begin: 
+                input(type="text", name="generateUrl", id="generateUrl")
+                button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                a(href="/about", id="aboutButton") About?
+
+        #content.container
+            iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+
+        script(type="text/javascript")
+
+          $("body").hashchange(onHashChange);
           $.hash.init();
 
           $("#doGenerate").on('click', doGenerate);
@@ -74,3 +81,4 @@ html(lang="en")
                   //doGenerate();
               }
           });
+

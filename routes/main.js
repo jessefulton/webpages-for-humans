@@ -175,7 +175,6 @@ app.get('/view/:url(*)', function(req, res, next){
 	}
 	else {
 		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
-		console.log(err);
 		return next();
 	}
 });
