@@ -23,6 +23,57 @@ html(lang="en")
             #bookmarklet a { font-style: normal; }
             #header { height:10%; width: 100%; margin:0; padding: 0; overflow:hidden; }
             #content { width: 100%; height:90%; margin:0; padding:0; }
+            
+            body {
+                border: 1px solid black;
+            }
+            #browser {
+                border: 1px solid white;
+                background-color: #d7d7d7;
+                outline: 2px solid black;
+                padding: 1px 4px;
+            }
+            #title-bar {
+                height: 18px;
+                width: 100%;
+                background: transparent url('stylesheets/images/header-bg.png') repeat-x right top;
+            }
+            #title-bar span {
+                display:block;
+                height: 18px;
+                width: 157px;
+                background: transparent url('stylesheets/images/title.png') no-repeat center top;
+                margin: 0 auto;
+                text-indent: -5000px;
+            }
+            
+            #toolbar { 
+                background-color: #e5e5e5;
+                outline: 1px solid black;
+                border: 1px solid white;
+            }
+            
+            #nav .btn {
+                width: 32px;
+                height: 32px;
+                background-image: url('stylesheets/images/back-forward-home.png');
+                text-indent: -5000px;
+                border: none;
+            }
+            #nav .btn a { display: block; width: 100%; height: 100%; }
+            #nav-back:hover { background-position: 0 0; }
+            #nav-forward, #nav-forward:hover { background-position: -46px 0; }
+            #nav-home, #nav-home:hover { background-position: -94px 0; }
+            
+            #content {
+                outline: 1px solid black;
+                border: 1px solid white;
+            }
+            
+            #location {
+                padding-top: 72px;
+                background: transparent url('stylesheets/images/location.png') no-repeat left top;
+            }
 
         script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
         script(type="text/javascript", src="/js-hash/Hash.js")
@@ -58,27 +109,40 @@ html(lang="en")
           };
 
     body
-        #header.container
-            p.form-inline Surf the human web. Enter a URL to begin: 
-                input(type="text", name="generateUrl", id="generateUrl")
-                button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                a(href="/about", id="aboutButton") About?
-
-        #content.container
-            iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
-
-        script(type="text/javascript")
-
-          $("body").hashchange(onHashChange);
-          $.hash.init();
-
-          $("#doGenerate").on('click', doGenerate);
-          $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
-
-          $("#generateUrl").on('keypress', function(event) {
-              if (event.which == 13) {
-                  $("#doGenerate").click();
-                  //doGenerate();
-              }
-          });
-
+        #browser
+            #title-bar: span Webpages For Humans
+            #toolbar
+                #nav
+                    #nav-back.btn Back
+                    #nav-forward.btn Forward
+                    #nav-home.btn: a(href="/about", id="aboutButton") Home
+                #location
+                    input(type="text", name="generateUrl", id="generateUrl")
+                    button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                    
+            
+            //-
+                #header.container
+                    p.form-inline Surf the human web. Enter a URL to begin: 
+                        input(type="text", name="generateUrl", id="generateUrl")
+                        button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                        a(href="/about", id="aboutButton") About?
+    
+            #content.container
+                iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+    
+            script(type="text/javascript")
+    
+              $("body").hashchange(onHashChange);
+              $.hash.init();
+    
+              $("#doGenerate").on('click', doGenerate);
+              $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
+    
+              $("#generateUrl").on('keypress', function(event) {
+                  if (event.which == 13) {
+                      $("#doGenerate").click();
+                      //doGenerate();
+                  }
+              });
+    
