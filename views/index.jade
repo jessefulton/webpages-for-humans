@@ -7,145 +7,86 @@ html(lang="en")
         meta(name="description", content="Webpages for Humans: surf the human web")
         meta(name="author", content="Jesse Fulton")
         title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
-        link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
         style(type="text/css")
-            .thumbnails .meta { text-align: center; }
-            .thumbnails .icon { padding-right: 4px; }
-            .thumbnail-nav { display:inline-block; width: 80px; }
-            .thumbnail-nav { display:inline-block; width: 80px; }
-            .row { margin-top: 5px; margin-bottom: 15px; }
-            .hero-unit h1
-            , .hero-unit .form-inline
-            , .hero-unit #bookmarklet { text-align: right; padding-right: 80px; }
-            .hero-unit .form-inline { margin-top: 20px; }
-            #bookmarklet { font-style: italic; text-align: right; margin-top: 20px; }
-            .hero-unit { padding-bottom: 20px; }
-            #bookmarklet a { font-style: normal; }
-            #header { height:10%; width: 100%; margin:0; padding: 0; overflow:hidden; }
-            #content { width: 100%; height:90%; margin:0; padding:0; }
-            
-            body {
-                border: 1px solid black;
-            }
-            #browser {
-                border: 1px solid white;
-                background-color: #d7d7d7;
-                outline: 2px solid black;
-                padding: 1px 4px;
-            }
-            #title-bar {
-                height: 18px;
-                width: 100%;
-                background: transparent url('stylesheets/images/header-bg.png') repeat-x right top;
-            }
-            #title-bar span {
-                display:block;
-                height: 18px;
-                width: 157px;
-                background: transparent url('stylesheets/images/title.png') no-repeat center top;
-                margin: 0 auto;
-                text-indent: -5000px;
+            html, body { background-color: black; }
+            body{
+                background:#000000;
+                color:#00FF00;
+                font-family:monospace;
             }
             
-            #toolbar { 
-                background-color: #e5e5e5;
-                outline: 1px solid black;
-                border: 1px solid white;
+            .accessGranted{
+                position:absolute;
+                top:200px;
+                background:#333;
+                padding:20px;
+                border:1px solid #999;
+                width:300px;
+                left:50%;
+                margin-left:-150px;
+                text-align:center;
             }
             
-            #nav .btn {
-                width: 32px;
-                height: 32px;
-                background-image: url('stylesheets/images/back-forward-home.png');
-                text-indent: -5000px;
-                border: none;
+            .accessDenied{
+                position:absolute;
+                top:200px;
+                color:#F00;
+                background:#511;
+                padding:20px;
+                border:1px solid #F00;
+                width:300px;
+                left:50%;
+                margin-left:-150px;
+                text-align:center;
             }
-            #nav .btn a { display: block; width: 100%; height: 100%; }
-            #nav-back:hover { background-position: 0 0; }
-            #nav-forward, #nav-forward:hover { background-position: -46px 0; }
-            #nav-home, #nav-home:hover { background-position: -94px 0; }
-            
-            #content {
-                outline: 1px solid black;
-                border: 1px solid white;
-            }
-            
-            #location {
-                padding-top: 22px;
-                border-top: 1px solid #ACACAC;
-                background: transparent url('stylesheets/images/location.png') no-repeat left top;
-            }
-            
-            #location input { width: 95%; }
 
-        script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
-        script(type="text/javascript", src="/js-hash/Hash.js")
-        script(type="text/javascript", src="/js-hash/jquery.hash.js")
+        script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js")
+        script(type="text/javascript", src="/typer.js")
         script(type="text/javascript")
-
-          var iframeChanged = function(where) { onHashChange(null, where.href, true); }
-
-          //$('#bookmarklet a').tooltip({})
-          //$('#captcha-image').modal({"show":false})
-          var doGenerate = function() {
-              var url = document.getElementById("generateUrl").value;
-              //window.location = "/view/" + url;
-              $.hash.go("/view/" + url);
-              return false;
-              //return goTo("/view/" + url);
-          }
-          var goTo = function(url) {
-            if (url) {
-              
-              var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
-              iDoc.location.replace(url);
-            }
-              //.attr("src", url);
-              //$.hash.go(url);
-              return false;
-          }
-
-          var onHashChange = function(event, newHash, bypass) {
-            console.log(arguments);
-            document.getElementById("generateUrl").value = newHash.replace(/^\/view\//g, "");
-            if (!bypass) goTo(newHash);
-          };
-
+            Typer.speed=3;
+            Typer.file='kernel.txt';
+            Typer.init();
     body
-        #browser
-            #title-bar: span Webpages For Humans
-            #toolbar
-                #nav
-                    #nav-back.btn Back
-                    #nav-forward.btn Forward
-                    #nav-home.btn: a(href="/about", id="aboutButton") Home
-                #location
-                    input(type="text", name="generateUrl", id="generateUrl")
-                    //- button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                    
-            
-            //-
-                #header.container
-                    p.form-inline Surf the human web. Enter a URL to begin: 
-                        input(type="text", name="generateUrl", id="generateUrl")
-                        button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                        a(href="/about", id="aboutButton") About?
-    
-            #content.container
-                iframe(id="viewport", src="/about", style="width:100%;height:90%", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
-    
+        #console
+        //-
             script(type="text/javascript")
-    
-              $("body").hashchange(onHashChange);
-              $.hash.init();
-    
-              $("#doGenerate").on('click', doGenerate);
-              $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
-    
-              $("#generateUrl").on('keypress', function(event) {
-                  if (event.which == 13) {
-                      $("#doGenerate").click();
-                      //doGenerate();
-                  }
-              });
-    
+                var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
+                var browser = window.open(dest, "WebpagesForHumans", "width=842,height=751,directories=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no");
+                if(!browser)
+                    alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
+                    
+        script(type="text/javascript")
+            $(function(){
+                var typingInterval;
+                
+                var showBrowser = function() {
+                    var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
+                    var browser = window.open(dest, "WebpagesForHumans", "width=842,height=751,directories=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no");
+                    if(!browser)
+                        alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
+                };
+                
+                /*
+                var addText = function() {
+                    if (!Typer.addText()) {
+                        console.log('done');
+                        window.clearInterval(typingInterval);
+                    }
+                };
+                */
+                typingInterval = window.setInterval(function() {
+                    if (!Typer.addText()) {
+                        console.log('done');
+                        window.clearInterval(typingInterval);
+                        showBrowser();
+                    }
+                }, 20);
+                
+                /*
+                $( document ).keydown(
+                    function ( event ) { 
+                        Typer.addText( event ); //Capture the keydown event and call the addText, this is executed on page load
+                    }
+                );
+                */
+            });

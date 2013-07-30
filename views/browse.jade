@@ -1,0 +1,85 @@
+!!!
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="keywords", content="captcha, recaptcha, ocr, optical character recognition, ocular character recognition")
+        meta(name="description", content="Webpages for Humans: surf the human web")
+        meta(name="author", content="Jesse Fulton")
+        title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
+        
+        //- TODO: Figure out what we need to rip out of bootstrap to get rid of it
+        link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/main.css')
+
+        script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
+        script(type="text/javascript", src="/js-hash/Hash.js")
+        script(type="text/javascript", src="/js-hash/jquery.hash.js")
+        script(type="text/javascript")
+
+          var iframeChanged = function(where) { onHashChange(null, where.href, true); }
+
+          //$('#bookmarklet a').tooltip({})
+          //$('#captcha-image').modal({"show":false})
+          var doGenerate = function() {
+              var url = document.getElementById("generateUrl").value;
+              //window.location = "/view/" + url;
+              $.hash.go("/view/" + url);
+              return false;
+              //return goTo("/view/" + url);
+          }
+          var goTo = function(url) {
+            if (url) {
+              
+              var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+              iDoc.location.replace(url);
+            }
+              //.attr("src", url);
+              //$.hash.go(url);
+              return false;
+          }
+
+          var onHashChange = function(event, newHash, bypass) {
+            console.log(arguments);
+            document.getElementById("generateUrl").value = newHash.replace(/^\/view\//g, "");
+            if (!bypass) goTo(newHash);
+          };
+
+    body
+        #browser
+            #title-bar: span Webpages For Humans
+            #toolbar
+                #nav
+                    #nav-back.btn Back
+                    #nav-forward.btn Forward
+                    #nav-home.btn: a(href="/about", id="aboutButton") Home
+                #location
+                    input(type="text", name="generateUrl", id="generateUrl")
+                    //- button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                    
+            
+            //-
+                #header.container
+                    p.form-inline Surf the human web. Enter a URL to begin: 
+                        input(type="text", name="generateUrl", id="generateUrl")
+                        button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                        a(href="/about", id="aboutButton") About?
+    
+            #content.container
+                iframe(id="viewport", src="/about", style="width:800px;height:600px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+    
+            script(type="text/javascript")
+    
+              $("body").hashchange(onHashChange);
+              $.hash.init();
+    
+              $("#doGenerate").on('click', doGenerate);
+              $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
+    
+              $("#generateUrl").on('keypress', function(event) {
+                  if (event.which == 13) {
+                      //$("#doGenerate").click();
+                      doGenerate();
+                  }
+              });
+    

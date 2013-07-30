@@ -1,9 +1,72 @@
+.thumbnails .meta { text-align: center; }
+.thumbnails .icon { padding-right: 4px; }
+.thumbnail-nav { display:inline-block; width: 80px; }
+.thumbnail-nav { display:inline-block; width: 80px; }
+.row { margin-top: 5px; margin-bottom: 15px; }
+.hero-unit h1
+, .hero-unit .form-inline
+, .hero-unit #bookmarklet { text-align: right; padding-right: 80px; }
+.hero-unit .form-inline { margin-top: 20px; }
+#bookmarklet { font-style: italic; text-align: right; margin-top: 20px; }
+.hero-unit { padding-bottom: 20px; }
+#bookmarklet a { font-style: normal; }
+#header { height:10%; width: 100%; margin:0; padding: 0; overflow:hidden; }
+#content { width: 100%; height:90%; margin:0; padding:0; }
 
-body
-  padding: 50px
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+body, html {
+    resize:none;
+}
 
-a
-  color: #00B7FF
+body {
+    border: 1px solid black;
+}
+#browser {
+    border: 1px solid white;
+    background-color: #d7d7d7;
+    outline: 2px solid black;
+    padding: 1px 4px;
+}
+#title-bar {
+    height: 18px;
+    width: 100%;
+    background: transparent url('/stylesheets/images/header-bg.png') repeat-x right top;
+}
+#title-bar span {
+    display:block;
+    height: 18px;
+    width: 157px;
+    background: transparent url('/stylesheets/images/title.png') no-repeat center top;
+    margin: 0 auto;
+    text-indent: -5000px;
+}
 
-@import 'screenshot'
+#toolbar { 
+    background-color: #e5e5e5;
+    outline: 1px solid black;
+    border: 1px solid white;
+}
+
+#nav .btn {
+    width: 32px;
+    height: 32px;
+    background-image: url('/stylesheets/images/back-forward-home.png');
+    text-indent: -5000px;
+    border: none;
+}
+#nav .btn a { display: block; width: 100%; height: 100%; }
+#nav-back:hover { background-position: 0 0; }
+#nav-forward, #nav-forward:hover { background-position: -46px 0; }
+#nav-home, #nav-home:hover { background-position: -94px 0; }
+
+#content {
+    outline: 1px solid black;
+    border: 1px solid white;
+}
+
+#location {
+    padding-top: 22px;
+    border-top: 1px solid #ACACAC;
+    background: transparent url('/stylesheets/images/location.png') no-repeat left top;
+}
+
+#location input { width: 95%; }

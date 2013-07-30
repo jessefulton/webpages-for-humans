@@ -18,28 +18,12 @@ var dir = app.get('screenshots')
  */
 
 app.get('/', function(req, res, next){
+      res.render('index', { layout: false });
+});
 
-  var from = -4
-    , to = -1
-    , batch = new Batch;
 
-  db.zrange('render:ids', from, to, function(err, ids){
-    if (err) return next(err);
-
-    // fetch
-    ids.forEach(function(id){
-      batch.push(function(fn){
-        db.hgetall('render:' + id, fn);
-      });
-    });
-
-    // finished
-    batch.end(function(err, objs){
-      if (err) return next(err);
-      res.render('index', { layout: false, screenshots: objs });
-    })
-  });
-
+app.get('/browse/:url(*)', function(req, res, next){
+      res.render('browse', { layout: false });
 });
 
 
