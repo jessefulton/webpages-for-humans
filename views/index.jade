@@ -88,7 +88,7 @@ html(lang="en")
                         a(href="/about", id="aboutButton") About?
     
             #content.container
-                iframe(id="viewport", src="/about", style="width:800px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+                iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
     
         script(type="text/javascript")
 
@@ -115,6 +115,19 @@ html(lang="en")
                     alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
                     
         script(type="text/javascript")
+            $(function(){
+                var iframe = document.getElementById("viewport");
+                $("#nav-forward").click(function() {
+                    iframe.contentWindow.history.back(); // back
+                });
+
+                $("#nav-back").click(function() {
+                    iframe.contentWindow.history.forward(); // back
+                });                
+                
+            });
+
+
             $(function(){
                 var typingInterval;
                 
