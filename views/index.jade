@@ -9,36 +9,14 @@ html(lang="en")
         title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
         style(type="text/css")
             html, body { background-color: black; }
-            body{
+            body, #console{
                 background:#000000;
                 color:#00FF00;
                 font-family:monospace;
             }
             
-            .accessGranted{
-                position:absolute;
-                top:200px;
-                background:#333;
-                padding:20px;
-                border:1px solid #999;
-                width:300px;
-                left:50%;
-                margin-left:-150px;
-                text-align:center;
-            }
-            
-            .accessDenied{
-                position:absolute;
-                top:200px;
-                color:#F00;
-                background:#511;
-                padding:20px;
-                border:1px solid #F00;
-                width:300px;
-                left:50%;
-                margin-left:-150px;
-                text-align:center;
-            }
+            #desktop, #browser { display:none; }
+
 
         script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js")
         script(type="text/javascript", src="/typer.js")
@@ -46,8 +24,89 @@ html(lang="en")
             Typer.speed=3;
             Typer.file='kernel.txt';
             Typer.init();
+            
+            
+        link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/main.css')
+
+        script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
+        script(type="text/javascript", src="/js-hash/Hash.js")
+        script(type="text/javascript", src="/js-hash/jquery.hash.js")
+        script(type="text/javascript")
+
+          var iframeChanged = function(where) { onHashChange(null, where.href, true); }
+
+          //$('#bookmarklet a').tooltip({})
+          //$('#captcha-image').modal({"show":false})
+          var doGenerate = function() {
+              var url = document.getElementById("generateUrl").value;
+              //window.location = "/view/" + url;
+              $.hash.go("/view/" + url);
+              return false;
+              //return goTo("/view/" + url);
+          }
+          var goTo = function(url) {
+            if (url) {
+              
+              var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+              iDoc.location.replace(url);
+            }
+              //.attr("src", url);
+              //$.hash.go(url);
+              return false;
+          }
+
+          var onHashChange = function(event, newHash, bypass) {
+            console.log(arguments);
+            document.getElementById("generateUrl").value = newHash.replace(/^\/view\//g, "");
+            if (!bypass) goTo(newHash);
+          };
+            
     body
+        // system console
         #console
+        
+        
+        // old school browser yo
+        #desktop: #browser
+            #title-bar: span Webpages For Humans
+            #toolbar
+                #nav
+                    #nav-back.btn Back
+                    #nav-forward.btn Forward
+                    #nav-home.btn: a(href="/about", id="aboutButton") Home
+                #location
+                    input(type="text", name="generateUrl", id="generateUrl")
+                    //- button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                    
+            
+            //-
+                #header.container
+                    p.form-inline Surf the human web. Enter a URL to begin: 
+                        input(type="text", name="generateUrl", id="generateUrl")
+                        button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
+                        a(href="/about", id="aboutButton") About?
+    
+            #content.container
+                iframe(id="viewport", src="/about", style="width:800px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+    
+        script(type="text/javascript")
+
+          $("body").hashchange(onHashChange);
+          $.hash.init();
+
+          $("#doGenerate").on('click', doGenerate);
+          $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
+
+          $("#generateUrl").on('keypress', function(event) {
+              if (event.which == 13) {
+                  //$("#doGenerate").click();
+                  doGenerate();
+              }
+          });
+    
+
+        
         //-
             script(type="text/javascript")
                 var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
@@ -60,10 +119,18 @@ html(lang="en")
                 var typingInterval;
                 
                 var showBrowser = function() {
+                    $("#console").hide();
+                    $("#desktop").show();
+                    window.setTimeout(function() {
+                        $("#browser").show();
+                    }, 3000);
+                    
+                    /*
                     var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
                     var browser = window.open(dest, "WebpagesForHumans", "width=842,height=751,directories=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no");
                     if(!browser)
                         alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
+                    */
                 };
                 
                 /*
@@ -78,7 +145,7 @@ html(lang="en")
                     if (!Typer.addText()) {
                         console.log('done');
                         window.clearInterval(typingInterval);
-                        showBrowser();
+                        window.setTimeout(showBrowser, 3000);
                     }
                 }, 20);
                 

@@ -1,49 +1,12 @@
-struct group_info init_groups = { .usage = ATOMIC_INIT(2) };
+  _    _  ______   _   _ 
+ | |  | | |  ___| | | | |
+ | |  | | | |_    | |_| |
+ | |/\| | |  _|   |  _  |
+ \  /\  / | |     | | | |
+  \/  \/  \_|     \_| |_/
+                         
+==========================
 
-struct group_info *groups_alloc(int gidsetsize){
+WEBPAGES FOR HUMANS
+© JESSE FULTON 2012 - 2013
 
-	struct group_info *group_info;
-
-	int nblocks;
-
-
-
-	if (gidsetsize <= NGROUPS_SMALL)
-
-		group_info->blocks[0] = group_info->small_block;
-
-	else {
-
-		for (i = 0; i < nblocks; i++) {
-
-			gid_t *b;
-
-			b = (void *)__get_free_page(GFP_USER);
-
-			if (!b)
-
-				goto out_undo_partial_alloc;
-
-			group_info->blocks[i] = b;
-
-		}
-
-	}
-
-	return group_info;
-
-
-
-out_undo_partial_alloc:
-
-	while (--i >= 0) {
-
-		free_page((unsigned long)group_info->blocks[i]);
-
-	}
-
-	kfree(group_info);
-
-	return NULL;
-
-}

@@ -17,14 +17,34 @@ body, html {
     resize:none;
 }
 
+html{
+    min-height: 100%;
+    position:relative;
+}
+
 body {
+    height:100%;
     border: 1px solid black;
 }
+
+#desktop {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    padding: 40px;
+    background: #FFF url('/stylesheets/images/loading.gif') no-repeat 50% 30%;
+}
+
 #browser {
+    width: 800px;
+    height:600px;
+    overflow:hidden;
     border: 1px solid white;
     background-color: #d7d7d7;
     outline: 2px solid black;
     padding: 1px 4px;
+    margin: 0 auto;
 }
 #title-bar {
     height: 18px;
