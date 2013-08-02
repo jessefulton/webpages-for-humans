@@ -1,6 +1,7 @@
-/*
-*(c) Copyright 2011 Simone Masiero. Some Rights Reserved. 
-*This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License
+/**
+* (c) Copyright 2011 Simone Masiero. Some Rights Reserved. 
+* Modified by Jesse Fulton, 2013.
+* This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License
 */
 
 var Typer={
@@ -26,43 +27,14 @@ var Typer={
 		$("#console").append(str);
 		return false;
 	},
-/*
-	makeAccess:function(){//create Access Granted popUp      FIXME: popup is on top of the page and doesn't show is the page is scrolled
-		Typer.hidepop(); // hide all popups
-		Typer.accessCount=0; //reset count
-		var ddiv=$("<div id='gran'>").html(""); // create new blank div and id "gran"
-		ddiv.addClass("accessGranted"); // add class to the div
-		ddiv.html("<h1>ACCESS GRANTED</h1>"); // set content of div
-		$(document.body).prepend(ddiv); // prepend div to body
-		return false;
-	},
-	makeDenied:function(){//create Access Denied popUp      FIXME: popup is on top of the page and doesn't show is the page is scrolled
-		Typer.hidepop(); // hide all popups
-		Typer.deniedCount=0; //reset count
-		var ddiv=$("<div id='deni'>").html(""); // create new blank div and id "deni"
-		ddiv.addClass("accessDenied");// add class to the div
-		ddiv.html("<h1>ACCESS DENIED</h1>");// set content of div
-		$(document.body).prepend(ddiv);// prepend div to body
-		return false;
-	},
 
-	hidepop:function(){// remove all existing popups
-		$("#deni").remove();
-		$("#gran").remove();
-	},
-*/
 	addText:function(key){//Main function to add the code
         if(Typer.text){ // otherway if text is loaded
 			var cont=Typer.content(); // get the console content
 			if(cont.substring(cont.length-1,cont.length)=="|") // if the last char is the blinking cursor
 				$("#console").html($("#console").html().substring(0,cont.length-1)); // remove it before adding the text
-//			if(key.keyCode!=8){ // if key is not backspace
-				Typer.index+=Typer.speed;	// add to the index the speed
-//			}else{
-//				if(Typer.index>0) // else if index is not less than 0 
-//					Typer.index-=Typer.speed;//	remove speed for deleting text
-//			}
-			var text=$("<div/>").text(Typer.text.substring(0,Typer.index)).html();// parse the text for stripping html enities
+            Typer.index+=Typer.speed;	// add to the index the speed
+		var text=$("<div/>").text(Typer.text.substring(0,Typer.index)).html();// parse the text for stripping html enities
 			var rtn= new RegExp("\n", "g"); // newline regex
 			var rts= new RegExp("\\s", "g"); // whitespace regex
 			var rtt= new RegExp("\\t", "g"); // tab regex
@@ -73,12 +45,6 @@ var Typer={
 			if (Typer.index >= Typer.text.length) { return false; }
 		}
 		return true;
-//		if ( key.preventDefault && key.keyCode != 122 ) { // prevent F11(fullscreen) from being blocked
-//			key.preventDefault()
-//		};  
-//		if(key.keyCode != 122){ // otherway prevent keys default behavior
-//			key.returnValue = false;
-//		}
 	},
 	
 	updLstChr:function(){ // blinking cursor

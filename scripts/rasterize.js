@@ -18,7 +18,7 @@ if (!path) throw new Error('output path required');
 size = size.split('x');
 
 page.viewportSize = {
-    width: ~~size[0] || 1024
+    width: ~~size[0] || 960
   , height: ~~size[1] || 600
 };
 

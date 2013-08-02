@@ -39,12 +39,15 @@ html(lang="en")
           //$('#bookmarklet a').tooltip({})
           //$('#captcha-image').modal({"show":false})
           var doGenerate = function() {
-              var url = document.getElementById("generateUrl").value;
+              var url = document.getElementById("browserUrl").value;
               //window.location = "/view/" + url;
               $.hash.go("/view/" + url);
               return false;
               //return goTo("/view/" + url);
           }
+          
+          // handle "about:project"
+          
           var goTo = function(url) {
             if (url) {
               
@@ -58,8 +61,13 @@ html(lang="en")
 
           var onHashChange = function(event, newHash, bypass) {
             console.log(arguments);
-            document.getElementById("generateUrl").value = newHash.replace(/^\/view\//g, "");
+            document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
             if (!bypass) goTo(newHash);
+            else {
+                if (newHash == "about:project") {
+                    goTo(window.location.origin + "/about");
+                }
+            }
           };
             
     body
@@ -76,16 +84,7 @@ html(lang="en")
                     #nav-forward.btn Forward
                     #nav-home.btn: a(href="/about", id="aboutButton") Home
                 #location
-                    input(type="text", name="generateUrl", id="generateUrl")
-                    //- button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                    
-            
-            //-
-                #header.container
-                    p.form-inline Surf the human web. Enter a URL to begin: 
-                        input(type="text", name="generateUrl", id="generateUrl")
-                        button.btn.btn-primary.btn-large(id="doGenerate", href="#") Go!
-                        a(href="/about", id="aboutButton") About?
+                    input(type="text", name="browserUrl", id="browserUrl")
     
             #content.container
                 iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
@@ -96,9 +95,9 @@ html(lang="en")
           $.hash.init();
 
           $("#doGenerate").on('click', doGenerate);
-          $("#aboutButton").on('click', function(){ $.hash.go("/about"); return false; });
+          $("#aboutButton").on('click', function(){ $.hash.go("about:project"); return false; });
 
-          $("#generateUrl").on('keypress', function(event) {
+          $("#browserUrl").on('keypress', function(event) {
               if (event.which == 13) {
                   //$("#doGenerate").click();
                   doGenerate();
@@ -118,11 +117,13 @@ html(lang="en")
             $(function(){
                 var iframe = document.getElementById("viewport");
                 $("#nav-forward").click(function() {
-                    iframe.contentWindow.history.back(); // back
+                    window.history.forward();
+                    //iframe.contentWindow.history.forward();
                 });
 
                 $("#nav-back").click(function() {
-                    iframe.contentWindow.history.forward(); // back
+                    window.history.back();
+                    //iframe.contentWindow.history.back();
                 });                
                 
             });
