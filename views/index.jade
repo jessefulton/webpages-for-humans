@@ -15,6 +15,8 @@ html(lang="en")
                 font-family:monospace;
             }
             
+            #console { padding-left:40px; }
+            
             #desktop, #browser { display:none; }
 
 
@@ -34,41 +36,34 @@ html(lang="en")
         script(type="text/javascript", src="/js-hash/jquery.hash.js")
         script(type="text/javascript")
 
-          var iframeChanged = function(where) { onHashChange(null, where.href, true); }
-
-          //$('#bookmarklet a').tooltip({})
-          //$('#captcha-image').modal({"show":false})
-          var doGenerate = function() {
-              var url = document.getElementById("browserUrl").value;
-              //window.location = "/view/" + url;
-              $.hash.go("/view/" + url);
-              return false;
-              //return goTo("/view/" + url);
-          }
-          
-          // handle "about:project"
-          
-          var goTo = function(url) {
-            if (url) {
-              
-              var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
-              iDoc.location.replace(url);
+            var iframeChanged = function(where) { onHashChange(null, where.href, true); }
+            
+            var doGenerate = function() {
+                var url = document.getElementById("browserUrl").value;
+                $.hash.go("/view/" + url);
+                return false;
             }
-              //.attr("src", url);
-              //$.hash.go(url);
-              return false;
-          }
-
-          var onHashChange = function(event, newHash, bypass) {
-            console.log(arguments);
-            document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
-            if (!bypass) goTo(newHash);
-            else {
-                if (newHash == "about:project") {
-                    goTo(window.location.origin + "/about");
+            
+            
+            var goTo = function(url) {
+                if (url) {
+                var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+                    iDoc.location.replace(url);
                 }
+            
+                return false;
             }
-          };
+            
+            var onHashChange = function(event, newHash, bypass) {
+                //console.log(arguments);
+                document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
+                if (!bypass) goTo(newHash);
+                else {
+                    if (newHash == "about:project") {
+                        goTo(window.location.origin + "/about");
+                    }
+                }
+            };
             
     body
         // system console
@@ -90,29 +85,23 @@ html(lang="en")
                 iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
     
         script(type="text/javascript")
-
-          $("body").hashchange(onHashChange);
-          $.hash.init();
-
-          $("#doGenerate").on('click', doGenerate);
-          $("#aboutButton").on('click', function(){ $.hash.go("about:project"); return false; });
-
-          $("#browserUrl").on('keypress', function(event) {
-              if (event.which == 13) {
-                  //$("#doGenerate").click();
-                  doGenerate();
-              }
-          });
+            $("body").hashchange(onHashChange);
+            $.hash.init();
+            
+            $("#doGenerate").on('click', doGenerate);
+            $("#aboutButton").on('click', function(){ $.hash.go("about:project"); return false; });
+            
+            $("#browserUrl").on('keypress', function(event) {
+                if (event.which == 13) {
+                    //$("#doGenerate").click();
+                    doGenerate();
+                }
+            });
+            
+            if (!window.location.hash) {
+                $.hash.go("about:project");
+            }
     
-
-        
-        //-
-            script(type="text/javascript")
-                var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
-                var browser = window.open(dest, "WebpagesForHumans", "width=842,height=751,directories=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no");
-                if(!browser)
-                    alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
-                    
         script(type="text/javascript")
             $(function(){
                 var iframe = document.getElementById("viewport");
@@ -138,23 +127,10 @@ html(lang="en")
                     window.setTimeout(function() {
                         $("#browser").show();
                     }, 3000);
-                    
-                    /*
-                    var dest = window.location.search ? window.location.search : window.location.origin + "/browse/" + window.location.origin + "/about";
-                    var browser = window.open(dest, "WebpagesForHumans", "width=842,height=751,directories=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no");
-                    if(!browser)
-                        alert('a popup was blocked. please make an exception for this site in your popup blocker and try again');
-                    */
+
                 };
-                
-                /*
-                var addText = function() {
-                    if (!Typer.addText()) {
-                        console.log('done');
-                        window.clearInterval(typingInterval);
-                    }
-                };
-                */
+
+
                 typingInterval = window.setInterval(function() {
                     if (!Typer.addText()) {
                         console.log('done');
@@ -163,11 +139,4 @@ html(lang="en")
                     }
                 }, 20);
                 
-                /*
-                $( document ).keydown(
-                    function ( event ) { 
-                        Typer.addText( event ); //Capture the keydown event and call the addText, this is executed on page load
-                    }
-                );
-                */
             });
