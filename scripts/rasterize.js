@@ -132,7 +132,7 @@ page.open(url, function (status) {
 					var el = foundLinks[i];
 					dummyA.href = el.href
 					el.href = "/#/view/" + dummyA.href;
-          el.target="_parent";
+                    el.target="_parent";
 				}
 
 				foundLinks = document.querySelectorAll("link[href]");		
@@ -166,13 +166,13 @@ page.open(url, function (status) {
 				return doctype + document.documentElement.outerHTML;
 			});
 			
-
+/*
 			//fs - see http://code.google.com/p/phantomjs/wiki/Interface#Filesystem_Module
 			fs.write(path + id + ".html"
 				, theHtml
 				, "w"
 			); 
-			
+*/			
 			
 			console.log (theHtml);
 

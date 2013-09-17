@@ -1,88 +1,88 @@
 !!!
 html(lang="en")
-  head
-    meta(charset="utf-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(name="keywords", content="captcha, recaptcha, ocr, optical character recognition, ocular character recognition")
-    meta(name="description", content="Webpages for Humans: surf the human web")
-    meta(name="author", content="Jesse Fulton")
-    base(target="_parent")
-    title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
-    link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
-    style(type="text/css")
-      .thumbnails .meta { text-align: center; }
-      .thumbnails .icon { padding-right: 4px; }
-      .thumbnail-nav { display:inline-block; width: 80px; }
-      .thumbnail-nav { display:inline-block; width: 80px; }
-      .row { margin-top: 5px; margin-bottom: 15px; }
-      .hero-unit h1
-      , .hero-unit .form-inline
-      , .hero-unit #bookmarklet { text-align: right; padding-right: 80px; }
-      .hero-unit .form-inline {margin-top: 20px; }
-      #bookmarklet { font-style: italic; text-align: right; margin-top: 20px; }
-      .hero-unit { padding: 20px; font-size:200%; font-weight:bold; }
-      #bookmarklet a { font-style: normal; }
-  body
-    #content.container
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="keywords", content="captcha, recaptcha, ocr, optical character recognition, ocular character recognition")
+        meta(name="description", content="Webpages for Humans: surf the human web")
+        meta(name="author", content="Jesse Fulton")
+        base(target="_parent")
+        title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
+        link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
+        style(type="text/css")
+            .thumbnails .meta { text-align: center; }
+            .thumbnails .icon { padding-right: 4px; }
+            .thumbnail-nav { display:inline-block; width: 80px; }
+            .thumbnail-nav { display:inline-block; width: 80px; }
+            .row { margin-top: 5px; margin-bottom: 15px; }
+            .hero-unit h1
+            , .hero-unit .form-inline
+            , .hero-unit #bookmarklet { text-align: right; padding-right: 80px; }
+            .hero-unit .form-inline {margin-top: 20px; }
+            #bookmarklet { font-style: italic; text-align: right; margin-top: 20px; }
+            .hero-unit { padding: 20px; font-size:200%; font-weight:bold; }
+            #bookmarklet a { font-style: normal; }
+    body
+        #content.container
 
-      #about.tab-pane
-        .row
-          .hero-unit Just want to get started? Type a URL into the location bar above.
-        .row
-          .span4
-            h1 What is this?
-            p 
-              strong Webpages for Humans
-              |  is part of 
-              a(href="http://danm.ucsc.edu/~jesse") Jesse Fulton
-              | 's MFA thesis at the 
-              a(href="http://danm.ucsc.edu/") Digital Arts + New Media program at UC Santa Cruz
-              | .
-            p
-              strong Webpages for Humans
-              |  is a web application that creates a version of the Internet which is only readable by humans. Screen-scraping technology is used to generate images of webpages which are then processed by 
-              a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") Optical Character Recognition software
-              |  to find machine-readable text on the page. This text is then 
-              strong: em "CAPTCHA-fied"
-              |  to create a distorted and manipulated rendering of that webpage. This previously machine-readable text, is distorted using the same algorithms used in CAPTCHA tests to ensure the computer programs can no longer decipher them.
-            p
-              | This site is part of a larger project which explores our relationship with digital representations of physical and cultural artifacts.
-          .span4
-            h1 CAPTCHA-fy?
-            p
-              | CAPTCHAs are the images of distorted text you must translate to do things like sign up for an account or post a comment on a website. They're used to prevent spam by determining if the user of a site is a human, or a computer program (often referred to as a "bot.")
-            div(style="text-align:center;")
-              img(src="/images/captcha-example.png", width="200px")
-              p
-                small A familiar CAPTCHA test
-            p 
-              | A CAPTCHA test generally consists of two text-based images: a word which could not be deciphered by 
-              a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
-              |  (the "unknown" word); and a second word which the OCR software 
-              em could
-              |  decipher (the "known" word.) The user is then prompted to type in both words, with the assumption being that if the known word is correctly identified, then the identification of the 
-              em unknown
-              |  word is also likely to be correct
-              sup: a(href="http://www.google.com/recaptcha/learnmore") source
-              | . This human translation for the unknown word is then added to the original OCR translation.
+            #about.tab-pane
+                .row
+                    .hero-unit Just want to get started? Type a URL into the location bar above.
+                .row
+                    .span4
+                        h1 What is this?
+                        p 
+                            strong Webpages for Humans
+                            |    is part of 
+                            a(href="http://danm.ucsc.edu/~jesse") Jesse Fulton
+                            | 's MFA thesis at the 
+                            a(href="http://danm.ucsc.edu/") Digital Arts + New Media program at UC Santa Cruz
+                            | .
+                        p
+                            strong Webpages for Humans
+                            |    is a web application that creates a version of the Internet which is only readable by humans. Screen-scraping technology is used to generate images of webpages which are then processed by 
+                            a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") Optical Character Recognition software
+                            |    to find machine-readable text on the page. This text is then 
+                            strong: em "CAPTCHA-fied"
+                            |    to create a distorted and manipulated rendering of that webpage. This previously machine-readable text, is distorted using the same algorithms used in CAPTCHA tests to ensure the computer programs can no longer decipher them.
+                        p
+                            | This site is part of a larger project which explores our relationship with digital representations of physical and cultural artifacts.
+                    .span4
+                        h1 CAPTCHA-fy?
+                        p
+                            | CAPTCHAs are the images of distorted text you must translate to do things like sign up for an account or post a comment on a website. They're used to prevent spam by determining if the user of a site is a human, or a computer program (often referred to as a "bot.")
+                        div(style="text-align:center;")
+                            img(src="/images/captcha-example.png", width="200px")
+                            p
+                                small A familiar CAPTCHA test
+                        p 
+                            | A CAPTCHA test generally consists of two text-based images: a word which could not be deciphered by 
+                            a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
+                            |    (the "unknown" word); and a second word which the OCR software 
+                            em could
+                            |    decipher (the "known" word.) The user is then prompted to type in both words, with the assumption being that if the known word is correctly identified, then the identification of the 
+                            em unknown
+                            |    word is also likely to be correct
+                            sup: a(href="http://www.google.com/recaptcha/learnmore") source
+                            | . This human translation for the unknown word is then added to the original OCR translation.
 
-          .span4
-            h1 CAPTCHA-why?
-            p
-              | When Google digitizes physical books (as part of its Google Books project), 
-              a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
-              |  is used to "read" the scanned pages and make it searchable and indexable. However, the computer algorithms fail occasionally due to scan irregularites, low print quality, or similar problems. When this happens, the only way to decipher these portions of the digitized text is with a human eye.
-            p
-              | Google's massive attempt to 
-              a(href="http://www.pcworld.com/article/202803/google_129_million_different_books_have_been_published.html") digitize every book in existence                
-              |  requires an enourmous amount of human labour. 
-              a(href="http://www.google.com/recaptcha") reCAPTCHA
-              | , the most popular CAPTCHA service on the Internet, fulfills this need by distributing this labour as micro-tasks across the Internet. In exchange for access to enhanced functionality, web users provide the labour required to translate that which computers cannot.
-              
-        #footer.container
-          .row.alert(style="background-color:#222;color:#eee")
-            .span4.offset4
-              i.icon-question-sign.icon-white 
-              | interested in the tech? check out 
-              a(href="https://github.com/jessefulton/webpages-for-humans") the code
+                    .span4
+                        h1 CAPTCHA-why?
+                        p
+                            | When Google digitizes physical books (as part of its Google Books project), 
+                            a(href="http://en.wikipedia.org/wiki/Optical_character_recognition") OCR software
+                            |    is used to "read" the scanned pages and make it searchable and indexable. However, the computer algorithms fail occasionally due to scan irregularites, low print quality, or similar problems. When this happens, the only way to decipher these portions of the digitized text is with a human eye.
+                        p
+                            | Google's massive attempt to 
+                            a(href="http://www.pcworld.com/article/202803/google_129_million_different_books_have_been_published.html") digitize every book in existence                                
+                            |    requires an enourmous amount of human labour. 
+                            a(href="http://www.google.com/recaptcha") reCAPTCHA
+                            | , the most popular CAPTCHA service on the Internet, fulfills this need by distributing this labour as micro-tasks across the Internet. In exchange for access to enhanced functionality, web users provide the labour required to translate that which computers cannot.
+                            
+                #footer.container
+                    .row.alert(style="background-color:#222;color:#eee")
+                        .span4.offset4
+                            i.icon-question-sign.icon-white 
+                            | interested in the tech? check out 
+                            a(href="https://github.com/jessefulton/webpages-for-humans") the code
 
