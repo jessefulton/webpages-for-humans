@@ -1,7 +1,7 @@
 
 
-var rasterize = require('../lib/rasterize')
-	, stream = require('../lib/stream')
+var stream = require('../lib/stream')
+  //, rasterize = require('../lib/rasterize')
 //  , imagemap = require('../lib/imagemap')
   , utils = require('../lib/utils')
   , path = require('path')
@@ -19,6 +19,10 @@ app.get('/', function(req, res, next){
       res.render('index', { layout: false });
 });
 
+
+app.get('/about', function(req, res, next){
+      res.render('about', { layout: false });
+});
 
 
 // TODO: GET RID OF THIS? OR TIMEOUT CACHE TO X MINUTES
@@ -75,10 +79,3 @@ app.get('/view/:url(*)', function(req, res, next){
 		return next();
 	}
 });
-
-
-app.get('/about', function(req, res, next){
-      res.render('about', { layout: false });
-});
-
-
