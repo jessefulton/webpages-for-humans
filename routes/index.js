@@ -55,6 +55,15 @@ app.get('/view/:url(*)', function(req, res, next){
 	if (!url) return next();
 	
 	
+	var qs = [];
+	for(var key in req.query) {
+	    qs.push(key + "=" + req.query[key]);
+	}
+	
+	if (qs && qs.length > 0) {
+	    url += "?" + qs.join("&");
+	}
+	
 	//var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 	var expression = /(https?:\/\/)?([a-z0-9\.]+)?\.[a-z]{2,4}/gi;
 	var regex = new RegExp(expression);
@@ -78,4 +87,51 @@ app.get('/view/:url(*)', function(req, res, next){
 		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
 		return next();
 	}
+});
+
+
+app.get('/form/:url(*)', function(req, res, next){
+console.log(req.params);
+console.log(req.query);
+	var url = utils.url(decodeURIComponent(req.params.url));
+	if (!url) return next();
+	
+	
+	var qs = [];
+	for(var key in req.query) {
+	    qs.push(key + "=" + req.query[key]);
+	}
+	
+	if (qs && qs.length > 0) {
+	    url += "?" + qs.join("&");
+	}
+	
+	//var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	var expression = /(https?:\/\/)?([a-z0-9\.]+)?\.[a-z]{2,4}/gi;
+	var regex = new RegExp(expression);
+	 
+	//if we have a valid URL, then go fetch
+	if (url.match(regex)) {
+			console.log("fetching screenshot for " + url);
+		  var id = utils.md5(url);
+		
+		  var options = {
+			//TODO: render to .PDF instead of .PNG - then run tesseract on image
+			  "path": dir
+			, "id": id
+			, "viewportWidth": req.query.width || app.get('default viewport width')
+			, "viewportHeight": req.query.height || app.get('default viewport height')
+		  };
+
+		  stream(url, options, function(err){}, res);
+	}
+	else {
+		console.log("Invalid URL. URL parameter " + url + " did not match on regex " + regex);
+		return next();
+	}
+});
+
+
+app.post('/form/:url(*)', function(req, res, next){
+    return next();
 });

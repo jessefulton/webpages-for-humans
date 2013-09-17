@@ -150,8 +150,12 @@ page.open(url, function (status) {
 				}
 
 
-			
-			
+			    var forms = document.querySelectorAll("form");
+			    for (var i=0; i<forms.length; i++) {
+			        dummyA.href = forms[i].action;
+			        forms[i].action = "/form/" + encodeURIComponent(dummyA.href);
+			    }
+
 
 				var doctype = "";
 				

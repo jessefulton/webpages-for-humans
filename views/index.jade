@@ -20,20 +20,20 @@ html(lang="en")
             #desktop, #browser { display:none; }
 
 
-        script(type="text/javascript", src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js")
-        script(type="text/javascript", src="/typer.js")
+        script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+        script(type="text/javascript", src="/vendor/typer/typer.js")
         script(type="text/javascript")
             Typer.speed=3;
-            Typer.file='kernel.txt';
+            Typer.file='/vendor/typer/kernel.txt';
             Typer.init();
-            
-            
-        link(rel='stylesheet', href='/bootstrap-ui/css/bootstrap.css')
-        link(rel='stylesheet', href='/stylesheets/main.css')
+          
 
-        script(type="text/javascript", src="/bootstrap-ui/js/jquery.js")
-        script(type="text/javascript", src="/js-hash/Hash.js")
-        script(type="text/javascript", src="/js-hash/jquery.hash.js")
+        link(rel='stylesheet', href='/vendor/bootstrap-ui/css/bootstrap.css')
+        //script(type="text/javascript", src="/vendor/bootstrap-ui/js/jquery.js")
+
+        link(rel='stylesheet', href='/stylesheets/main.css')            
+        script(type="text/javascript", src="/vendor/js-hash/Hash.js")
+        script(type="text/javascript", src="/vendor/js-hash/jquery.hash.js")
         script(type="text/javascript")
 
             var iframeChanged = function(where) { onHashChange(null, where.href, true); }
