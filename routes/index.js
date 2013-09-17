@@ -1,4 +1,3 @@
-
 require('./main');
-require('./data');
+//require('./data');
 //require('./palette');

@@ -1,10 +1,7 @@
-
+/*
 var parse = require('url').parse;
 var db = app.db;
 
-/**
- * Set screenshot:<id> hash.
- */
 
 app.on('render', function(url, path, id){
   var now = Date.now();
@@ -21,10 +18,8 @@ app.on('render', function(url, path, id){
   });
 });
 
-/**
- * Screenshot statistics.
- */
 
 app.on('render', function(url, path, id){
   db.hincrby('render:stats', 'total', 1);
 });
+*/

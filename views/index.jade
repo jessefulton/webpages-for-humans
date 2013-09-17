@@ -9,13 +9,13 @@ html(lang="en")
         title Web Biennial 2012 - Jesse Fulton - Webpages for Humans
         style(type="text/css")
             html, body { background-color: black; }
-            body, #console{
+            body, #console-wrapper {
                 background:#000000;
                 color:#00FF00;
                 font-family:monospace;
             }
             
-            #console { padding-left:40px; }
+            #console { margin: 0 auto; width: 500px; }
             
             #desktop, #browser { display:none; }
 
@@ -55,7 +55,7 @@ html(lang="en")
             }
             
             var onHashChange = function(event, newHash, bypass) {
-                //console.log(arguments);
+
                 document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
                 if (!bypass) goTo(newHash);
                 else {
@@ -67,7 +67,8 @@ html(lang="en")
             
     body
         // system console
-        #console
+        #console-wrapper
+            #console
         
         
         // old school browser yo
@@ -122,7 +123,7 @@ html(lang="en")
                 var typingInterval;
                 
                 var showBrowser = function() {
-                    $("#console").hide();
+                    $("#console-wrapper").hide();
                     $("#desktop").show();
                     window.setTimeout(function() {
                         $("#browser").show();
@@ -133,7 +134,6 @@ html(lang="en")
 
                 typingInterval = window.setInterval(function() {
                     if (!Typer.addText()) {
-                        console.log('done');
                         window.clearInterval(typingInterval);
                         window.setTimeout(showBrowser, 3000);
                     }
