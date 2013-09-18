@@ -25,17 +25,20 @@ page.viewportSize = {
 debug("phantomjs: setup viewport");
 
 
+page.settings.resourceTimeout = 5000;
+page.onResourceTimeout = function(e) {
+  console.error("RESOURCE TIMEOUT: [" + e.errorCode + "] " + e.errorString + " (" + e.url + ")");
+};
+
+
+
 page.open(url, function (status) {
   if (status == 'success') {
-	  debug("phantomjs: successfully opened URL");
-    //page.render(path);
-    //phantom.exit();
+    debug("phantomjs: successfully opened URL");
 
 	page.injectJs('module-shim.js');    
 	page.injectJs('../node_modules/captchafy/lib/captchafy.js');
 	
-	//page.evaluate('function() {captchify("' + text.replace("\"", "\\\"") + '", '+fontSize+');}');
-
 	page.onAlert = function (msg) { 
 		//debug("ALERT: " + msg);
 	};
@@ -68,8 +71,6 @@ page.open(url, function (status) {
 			}
 		
 			var doIt = function() {	
-				//console.log('about to doIt()');
-				//console.log(_captchafy);
 				_captchafy.captchafyText(jQuery, jQuery(document.body), function() {
 					jQuery(document.body).addClass("captchafied");
 				});
@@ -94,29 +95,6 @@ page.open(url, function (status) {
 				return document.body.className;
 			});
 			
-			
-			/*
-			var theHtml = page.evaluate(function() {
-				var dt = document.doctype;
-				var doctype = '<!DOCTYPE '+ 
-					dt.name+' PUBLIC "'+ //maybe you should check for publicId first
-					dt.publicId+'" "'+
-					dt.systemId+'">';
-				return doctype + document.documentElement.outerHTML;
-			});
-			
-
-			//fs - see http://code.google.com/p/phantomjs/wiki/Interface#Filesystem_Module
-			fs.write(htmlFolder + filenameRoot + ".html"
-				, theHtml
-				, "w"
-			); 
-			
-			*/
-			
-			var mgn = page.evaluate(function() { return document.body.outerHTML;});
-			//debug(mgn);
-			//debug(cn);
 			return cn.indexOf("captchafied") != -1;
 		}, function() {
 			debug("rendered.");
@@ -170,19 +148,7 @@ page.open(url, function (status) {
 				return doctype + document.documentElement.outerHTML;
 			});
 			
-/*
-			//fs - see http://code.google.com/p/phantomjs/wiki/Interface#Filesystem_Module
-			fs.write(path + id + ".html"
-				, theHtml
-				, "w"
-			); 
-*/			
-			
 			console.log (theHtml);
-
-			
-			
-			
 			phantom.exit();
 		}, 30000
 	);        

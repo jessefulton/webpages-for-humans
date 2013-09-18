@@ -73,7 +73,7 @@ html(lang="en")
             var goToURL = function(url) {
                 console.log("goToURL: " + url);
                 if (url) {
-                var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+                    var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
                     iDoc.location.replace(url);
                 }
                 return false;
@@ -89,7 +89,7 @@ html(lang="en")
                 }
             
                 console.log("Hash Change: " + newHash);
-                document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
+                document.getElementById("browserUrl").value = decodeURIComponent(newHash.replace(window.location.origin, "").replace(/^\/view\//g, "").replace(/^\/form\//g, ""));
                 if (!bypass) goToURL(newHash);
                 else {
                     if (newHash == "about:project") {
@@ -141,7 +141,7 @@ html(lang="en")
     
         script(type="text/javascript")
             $(function(){
-                var iframe = document.getElementById("viewport");
+                
                 $("#nav-forward").click(function() {
                     window.history.forward();
                 });

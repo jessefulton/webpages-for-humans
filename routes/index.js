@@ -4,6 +4,7 @@ var stream = require('../lib/stream')
   //, rasterize = require('../lib/rasterize')
 //  , imagemap = require('../lib/imagemap')
   , utils = require('../lib/utils')
+  , liburl = require("url")
   , path = require('path')
   , join = path.join
   , fs = require('fs');
@@ -52,7 +53,12 @@ app.get('/view/:url(*)', function(req, res, next){
  */
 app.get('/view/:url(*)', function(req, res, next){
 	var url = utils.url(req.params.url);
-	if (!url) return next();
+	var parsed = liburl.parse(url);
+    var re = new RegExp(/^((?:(?:(?:\w[\.\-\+]?)*)\w)+)((?:(?:(?:\w[\.\-\+]?){0,62})\w)+)\.(\w{2,6})$/);
+
+    console.log("getting view for " + url);
+
+	if (!url || !re.test(parsed.hostname)) return next();
 	
 	
 	var qs = [];
