@@ -78,6 +78,21 @@ body {
 #nav-forward, #nav-forward:hover { background-position: -46px 0; }
 #nav-home, #nav-home:hover { background-position: -94px 0; }
 
+#nav #nav-stop.btn {
+    width: 32px;
+    height: 32px;
+    background-image: url('/stylesheets/images/stop-button.png');
+    text-indent: -5000px;
+    border: none;
+    background-position: 7px 0;
+    cursor: default;
+}
+
+.loading #nav #nav-stop.btn {
+    cursor: pointer;
+    background-position: -34px 0;
+}
+
 #content {
     outline: 1px solid black;
     border: 1px solid white;

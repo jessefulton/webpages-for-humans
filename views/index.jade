@@ -18,6 +18,24 @@ html(lang="en")
             #console { margin: 0 auto; width: 500px; }
             
             #desktop, #browser { display:none; }
+            
+            #content { position: relative; }
+            
+            #overlay { display: none; }
+            .loading #overlay { 
+                display: block;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                position: absolute;
+                background-color: #000;
+                opacity: 0.2;
+                -webkit-opacity: 0.2;
+                -moz-opacity: 0.2;
+            }
+
+            #browser-icon { /* static bg */ }
+            .loading #browser-icon { /* animated bg */ }
 
 
         script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
@@ -26,7 +44,6 @@ html(lang="en")
             Typer.speed=3;
             Typer.file='/vendor/typer/kernel.txt';
             Typer.init();
-          
 
         link(rel='stylesheet', href='/vendor/bootstrap-ui/css/bootstrap.css')
         //script(type="text/javascript", src="/vendor/bootstrap-ui/js/jquery.js")
@@ -36,31 +53,47 @@ html(lang="en")
         script(type="text/javascript", src="/vendor/js-hash/jquery.hash.js")
         script(type="text/javascript")
 
-            var iframeChanged = function(where) { onHashChange(null, where.href, true); }
+            var goingTo = "";
+
+            var onIFrameChange = function(where) {
+                console.log("onIFrameChange: " + where.href);
+                $(document.body).removeClass("loading");
+                goingTo = where.href;
+                onHashChange(null, where.href, true);
+            }
             
-            var doGenerate = function() {
-                var url = document.getElementById("browserUrl").value;
+            var loadBrowserURL = function() {
+                console.log("loadBrowserURL: " + $("#browserUrl").val());
+                var url = $("#browserUrl").val();
                 $.hash.go("/view/" + url);
                 return false;
             }
             
             
-            var goTo = function(url) {
+            var goToURL = function(url) {
+                console.log("goToURL: " + url);
                 if (url) {
                 var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
                     iDoc.location.replace(url);
                 }
-            
                 return false;
             }
             
             var onHashChange = function(event, newHash, bypass) {
-
+                if (goingTo && newHash == goingTo) {
+                    $(document.body).removeClass("loading");
+                    goingTo = "";
+                }
+                else {
+                    $(document.body).addClass("loading");
+                }
+            
+                console.log("Hash Change: " + newHash);
                 document.getElementById("browserUrl").value = newHash.replace(window.location.origin, "").replace(/^\/view\//g, "");
-                if (!bypass) goTo(newHash);
+                if (!bypass) goToURL(newHash);
                 else {
                     if (newHash == "about:project") {
-                        goTo(window.location.origin + "/about");
+                        goToURL(window.location.origin + "/about");
                     }
                 }
             };
@@ -79,42 +112,60 @@ html(lang="en")
                     #nav-back.btn Back
                     #nav-forward.btn Forward
                     #nav-home.btn: a(href="/about", id="aboutButton") Home
+                    #nav-stop.btn Stop
                 #location
                     input(type="text", name="browserUrl", id="browserUrl")
     
             #content.container
-                iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="iframeChanged(this.contentWindow.location);")
+                #overlay
+                iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="onIFrameChange(this.contentWindow.location);")
     
         script(type="text/javascript")
-            $("body").hashchange(onHashChange);
-            $.hash.init();
-            
-            $("#doGenerate").on('click', doGenerate);
-            $("#aboutButton").on('click', function(){ $.hash.go("about:project"); return false; });
-            
-            $("#browserUrl").on('keypress', function(event) {
-                if (event.which == 13) {
-                    //$("#doGenerate").click();
-                    doGenerate();
+            $(function() {
+                $("body").hashchange(onHashChange);
+                $.hash.init();
+                
+                $("#loadBrowserURL").on('click', loadBrowserURL);
+                $("#aboutButton").on('click', function(){ $.hash.go("about:project"); return false; });
+                
+                $("#browserUrl").on('keypress', function(event) {
+                    if (event.which == 13) {
+                        loadBrowserURL();
+                    }
+                });
+                
+                if (!window.location.hash) {
+                    $.hash.go("about:project");
                 }
             });
-            
-            if (!window.location.hash) {
-                $.hash.go("about:project");
-            }
     
         script(type="text/javascript")
             $(function(){
                 var iframe = document.getElementById("viewport");
                 $("#nav-forward").click(function() {
                     window.history.forward();
-                    //iframe.contentWindow.history.forward();
                 });
 
                 $("#nav-back").click(function() {
                     window.history.back();
-                    //iframe.contentWindow.history.back();
-                });                
+                });
+                
+                $("#nav-stop").click(function() {
+                    if ($(document.body).hasClass("loading")) {
+                        $(document.body).removeClass("loading");
+                        
+                        if (typeof (window.frames[0].stop) === 'undefined') {
+                            //Internet Explorer code
+                            setTimeout(function() {window.frames[0].document.execCommand('Stop');},10);
+                        }
+                        else {
+                            //Other browsers
+                            setTimeout(function() {window.frames[0].stop();},10);
+                        }
+                        
+                        //window.history.back();
+                    }
+                });
                 
             });
 
@@ -131,12 +182,10 @@ html(lang="en")
 
                 };
 
-
                 typingInterval = window.setInterval(function() {
                     if (!Typer.addText()) {
                         window.clearInterval(typingInterval);
                         window.setTimeout(showBrowser, 3000);
                     }
                 }, 20);
-                
             });

@@ -7,3 +7,18 @@ manipulated rendering of that webpage. This previously machine-readable
 text, is distorted using the same algorithms used in CAPTCHA tests to 
 ensure the computer programs can no longer decipher them as text using 
 Optical Character Recognition technologies.
+
+
+# Setup
+
+
+## CasperJS
+
+## Node
+
+## Redis
+
+http://redis.io/topics/config
+
+
+# Deployment
