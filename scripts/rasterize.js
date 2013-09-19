@@ -5,6 +5,23 @@ function debug() {
 	if (DEBUG) { console.log.apply(arguments); }
 }
 
+
+phantom.onError = function(msg, trace) {
+    var msgStack = ['PHANTOM ERROR: ' + msg];
+    if (trace && trace.length) {
+        msgStack.push('TRACE:');
+        trace.forEach(function(t) {
+            msgStack.push(' -> ' + (t.file || t.sourceURL) + ': ' + t.line + (t.function ? ' (in function ' + t.function + ')' : ''));
+        });
+    }
+    console.error(msgStack.join('\n'));
+    phantom.exit(1);
+};
+
+
+
+
+
 debug("executing phantomjs rasterize.js");
 var page = require('webpage').create()
   , url = phantom.args[0]
@@ -31,6 +48,20 @@ page.onResourceTimeout = function(e) {
 };
 
 
+page.onAlert = function (msg) { 
+    //debug("ALERT: " + msg);
+};
+page.onConsoleMessage = function (msg) {
+    //debug("CONSOLE: " + msg);
+};
+page.onError = function (msg, trace) {
+    /*
+    debug("ERROR: " + msg);
+    trace.forEach(function(item) {
+        debug('  ', item.file, ':', item.line);
+    })
+    */
+};
 
 page.open(url, function (status) {
   if (status == 'success') {
@@ -39,20 +70,7 @@ page.open(url, function (status) {
 	page.injectJs('module-shim.js');    
 	page.injectJs('../node_modules/captchafy/lib/captchafy.js');
 	
-	page.onAlert = function (msg) { 
-		//debug("ALERT: " + msg);
-	};
-	page.onConsoleMessage = function (msg) {
-		//debug("CONSOLE: " + msg);
-	};
-	page.onError = function (msg, trace) {
-		/*
-		debug("ERROR: " + msg);
-		trace.forEach(function(item) {
-			debug('  ', item.file, ':', item.line);
-		})
-		*/
-	}
+
 
 	page.evaluate(function() {
 		(function() {
