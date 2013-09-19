@@ -65,6 +65,10 @@ page.open(url, function (status) {
 				var s=document.createElement('script');
 				s.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
 				document.getElementsByTagName('body')[0].appendChild(s);
+
+				s=document.createElement('script');
+				s.setAttribute('src','http://webpagesforhumans.com/js/jquery-noconflict.js');
+                document.getElementsByTagName('body')[0].appendChild(s);
 			}
 			else {
 				//console.log('already had jquery');

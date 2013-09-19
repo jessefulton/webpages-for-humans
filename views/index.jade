@@ -56,14 +56,14 @@ html(lang="en")
             var goingTo = "";
 
             var onIFrameChange = function(where) {
-                console.log("onIFrameChange: " + where.href);
+                //console.log("onIFrameChange: " + where.href);
                 $(document.body).removeClass("loading");
                 goingTo = where.href;
                 onHashChange(null, where.href, true);
             }
             
             var loadBrowserURL = function() {
-                console.log("loadBrowserURL: " + $("#browserUrl").val());
+                //console.log("loadBrowserURL: " + $("#browserUrl").val());
                 var url = $("#browserUrl").val();
                 $.hash.go("/view/" + url);
                 return false;
@@ -71,7 +71,7 @@ html(lang="en")
             
             
             var goToURL = function(url) {
-                console.log("goToURL: " + url);
+                //console.log("goToURL: " + url);
                 if (url) {
                     var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
                     iDoc.location.replace(url);
@@ -88,7 +88,7 @@ html(lang="en")
                     $(document.body).addClass("loading");
                 }
             
-                console.log("Hash Change: " + newHash);
+                //console.log("Hash Change: " + newHash);
                 document.getElementById("browserUrl").value = decodeURIComponent(newHash.replace(window.location.origin, "").replace(/^\/view\//g, "").replace(/^\/form\//g, ""));
                 if (!bypass) goToURL(newHash);
                 else {
