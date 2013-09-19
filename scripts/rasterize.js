@@ -27,7 +27,7 @@ debug("phantomjs: setup viewport");
 
 page.settings.resourceTimeout = 5000;
 page.onResourceTimeout = function(e) {
-  console.error("RESOURCE TIMEOUT: [" + e.errorCode + "] " + e.errorString + " (" + e.url + ")");
+  debug("RESOURCE TIMEOUT: [" + e.errorCode + "] " + e.errorString + " (" + e.url + ")");
 };
 
 
