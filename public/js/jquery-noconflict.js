@@ -1,0 +1,1 @@
+try { $.noConflict(); } catch(e) {}
