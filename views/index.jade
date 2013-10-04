@@ -105,21 +105,26 @@ html(lang="en")
         
         
         // old school browser yo
-        #desktop: #browser
-            #title-bar: span Webpages For Humans
-            #toolbar
-                #nav
-                    #nav-back.btn Back
-                    #nav-forward.btn Forward
-                    #nav-home.btn: a(href="/about", id="aboutButton") Home
-                    #nav-stop.btn Stop
-                #location
-                    input(type="text", name="browserUrl", id="browserUrl")
-    
-            #content.container
-                #overlay
-                iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="onIFrameChange(this.contentWindow.location);")
-    
+        #desktop
+            //-
+                #frame-buster-error
+                    p Sorry, but this site is incomaptible with Webpages for Humans.
+            #browser
+                #title-bar: span Webpages For Humans
+                #toolbar
+                    #nav
+                        #nav-back.btn Back
+                        #nav-forward.btn Forward
+                        #nav-home.btn: a(href="/about", id="aboutButton") Home
+                        #nav-stop.btn Stop
+                    #location
+                        input(type="text", name="browserUrl", id="browserUrl")
+        
+                #content.container
+                    #overlay
+                    //iframe(id="viewport", src="about:blank", style="width:960px;height:479px", frameBorder="0", onLoad="onIFrameChange(this.contentWindow.location);")
+                    iframe(id="viewport", src="about:blank", sandbox="allow-forms allow-scripts allow-same-origin", style="width:960px;height:479px", frameBorder="0", onLoad="onIFrameChange(this.contentWindow.location);")
+        
         script(type="text/javascript")
             $(function() {
                 $("body").hashchange(onHashChange);
@@ -141,13 +146,53 @@ html(lang="en")
     
         script(type="text/javascript")
             $(function(){
+                /*
+                window.onbeforeunload = function(e) {
+                    //console.log(e.currentTarget.location.toString());
+                    //console.log(window.location.toString());
+                    return "The page you are visiting is trying to break out of Webpages for Humans. Please click \"Stay on this Page\" below.";
+                };
+                */
+
+                /*                
+                var showFrameBusterError = function() {
+                    $("#frame-buster-error").fadeIn(2000, function() {
+                        $("#frame-buster-error").fadeOut();
+                    });
+                };
                 
+                $("#frame-buster-error").fadeOut();
+                
+                // frame buster buster
+                var prevent_bust = 0  
+                window.onbeforeunload = function() { prevent_bust++ }  
+                setInterval(function() {  
+                    if (prevent_bust > 0) {  
+                        prevent_bust -= 2;
+                        window.top.location = '/204';
+                        window.history.go(-2);
+                        showFrameBusterError();
+                    }
+                }, 1);
+                */
+                
+                var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
                 $("#nav-forward").click(function() {
-                    window.history.forward();
+                    try {
+                        iDoc.history.forward();
+                    }
+                    catch(e) {
+                        //window.history.forward();
+                    }
                 });
 
                 $("#nav-back").click(function() {
-                    window.history.back();
+                    try {
+                        iDoc.history.back();
+                    }
+                    catch(e) {
+                        //window.history.back();
+                    }
                 });
                 
                 $("#nav-stop").click(function() {

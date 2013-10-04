@@ -131,8 +131,9 @@ page.open(url, function (status) {
 				for(var i=0; i<foundLinks.length; i++) {
 					var el = foundLinks[i];
 					dummyA.href = el.href
-					el.href = "/#/view/" + dummyA.href;
-                    el.target="_parent";
+					el.href = "/view/" + dummyA.href;
+					//el.href = "/#/view/" + dummyA.href;
+                    //el.target="_parent";
 				}
 
 				foundLinks = document.querySelectorAll("link[href]");		

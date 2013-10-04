@@ -20,6 +20,9 @@ app.get('/', function(req, res, next){
       res.render('index', { layout: false });
 });
 
+app.get('/204', function(req, res, next){
+      res.send(204);
+});
 
 app.get('/about', function(req, res, next){
       res.render('about', { layout: false });
