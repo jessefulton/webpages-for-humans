@@ -80,6 +80,9 @@ html(lang="en")
             }
             
             var onHashChange = function(event, newHash, bypass) {
+                //console.log("Hash Change. goingTo=" + goingTo + "; newHash=" + newHash);
+                if (!goingTo && !newHash) return;
+                
                 if (goingTo && newHash == goingTo) {
                     $(document.body).removeClass("loading");
                     goingTo = "";
