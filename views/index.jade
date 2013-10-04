@@ -56,6 +56,16 @@ html(lang="en")
             var goingTo = "";
 
             var onIFrameChange = function(where) {
+            
+                var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+
+                iDoc.onbeforeunload=function() { 
+                    //console.log("unloading iframe " + iDoc.location.href);
+                    $(document.body).addClass("loading");
+                    return null;
+                }
+
+            
                 //console.log("onIFrameChange: " + where.href);
                 $(document.body).removeClass("loading");
                 goingTo = where.href;
@@ -180,6 +190,8 @@ html(lang="en")
                 */
                 
                 var iDoc = document.getElementById("viewport").contentWindow || document.getElementById("viewport").contentDocument;
+
+                
                 $("#nav-forward").click(function() {
                     try {
                         iDoc.history.forward();
